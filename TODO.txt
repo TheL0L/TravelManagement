@@ -1,0 +1,36 @@
+Each team member has to read the source file (Code.cpp).
+
+Any completed tasks should be marked as completed instead of removing
+    them from the list, for example:
+
+    * Critical Bugs
+        fixed: - some bug
+
+
+
+* System("cls")
+    - might cause issues when debugging, should research into it.
+        for now, if any issues with printing arise, try removing it.
+
+* Input
+    - most string inputs ignore first character.
+    - written in C style, should be rewritten to C++ style.
+
+* Output
+    - on multiple occasions doesn't drop to a new line before asking for input.
+    - some grammatical mistakes found.
+
+* Refactoring
+    - split main file into sub files for classes and implementation.
+    - main function has many nested 'switch's and 'if's,
+        if possible should extract into functions.
+
+* Critical Bugs
+    - class: PersonalDetails
+        field: PassportNum
+            array has only 9 cells, thus can cause OutOfBounds exception.
+        
+        method: p_input
+            has no input check for max bound, because of static memory
+            allocation the hardcoded max bound is 20 items in arrays.
+
