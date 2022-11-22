@@ -21,7 +21,7 @@ Any completed tasks should be marked as completed instead of removing
     - some grammatical mistakes found.
 
 * Refactoring
-    - split main file into sub files for classes and implementation.
+WIP:    - split main file into sub files for classes and implementation.
     - main function has many nested 'switch's and 'if's,
         if possible should extract into functions.
 
