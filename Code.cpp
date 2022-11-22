@@ -13,67 +13,6 @@ long int code;
 #include "PersonalDetails.h"
 #include "TravelDetails.h"
 
-void boardpt(int c) // for easy o/p
-{
-    if (c == 1)
-        cout << "Mumbai\t";
-    if (c == 2)
-        cout << "Cochin\t";
-    if (c == 3)
-        cout << "Chennai\t";
-}
-
-void dest(int d) // for easy o/p
-{
-    switch (d)
-    {
-    case 1:
-        cout << "New York";
-        break;
-    case 2:
-        cout << "Miami";
-        break;
-    case 3:
-        cout << "Rio De Janero";
-        break;
-    case 4:
-        cout << "Colombo";
-        break;
-    case 5:
-        cout << "Hong Kong";
-        break;
-    case 6:
-        cout << "Dubai";
-        break;
-    case 7:
-        cout << "Lisbon";
-        break;
-    case 8:
-        cout << "London";
-        break;
-    case 9:
-        cout << "Copenhagen";
-        break;
-    case 10:
-        cout << "Cape Town";
-        break;
-    case 11:
-        cout << "Antananriv";
-        break;
-    case 12:
-        cout << "Cairo";
-        break;
-    case 13:
-        cout << "Perth";
-        break;
-    case 14:
-        cout << "Sydney";
-        break;
-    case 15:
-        cout << "Willington";
-        break;
-    }
-}
 
 
 
