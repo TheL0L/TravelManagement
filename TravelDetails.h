@@ -2,6 +2,28 @@
 #include <iostream>
 using namespace std;
 
+/*
+fields:
+    TravelCode - each travel entry has 'unique' id by which the details can be accessed
+    day,month,year - fields represent the date of departure
+    num1 - number of adult family members
+    BoardingPoint - id of boarding location for ease of managing
+    DisembarkingPoint - id of disembarking location for ease of managing
+    Class - flight class id, affects prices and available activities
+    pool, gym, sports, salon, spa - boolean values of activities
+
+methods:
+    initial() - function resets the boolean fields to 0
+    t_input(cd) - function gets the TravelCode as arg, and collects travel details from input
+    t_output() - function prints travel details
+    compute() - function calculates total travel expenses, reservation time, and prints a receipt
+    gtcode() - function returns TravelCode
+    accept(c) - function gets number of adult family members as arg, and assigns value to num1
+    boardpt(c) - function gets BoardingPoint as arg, prints name of boarding location
+    dest(d) - function gets DisembarkingPoint as arg, prints name of disembarking location
+
+*/
+
 void boardpt(int c);
 void dest(int d);
 
@@ -124,8 +146,17 @@ public:
     }
     void compute()
     {
+        /*
+            gttl - total travel expenses
+            hr - days reserved (in hours, per location) ~ usage of hours is redundant
+            dcst - ticket price (per location)
+            cls - flight class base price
+            cabn - ? ~ never used
+            swpool, gm, spfts, slon, sp - base prices for expenses (per location)
+            ttr - ? ~ never used
+        */
         long int gttl = 0, hr, dcst, cls, cabn, swpool = 5000, gm = 2000, spfts = 7500, slon = 6000, sp = 20000, ttr = 500;
-        switch (DisembarkingPoint)
+        switch (DisembarkingPoint)  // assign prices for activities and ticket per destination
         {
         case 1:;
         case 2:;
@@ -177,7 +208,7 @@ public:
         dest(DisembarkingPoint);
         cout << "\nDate of Departure: ";
         cout << day << "/" << month << "/" << year;
-        hr = hr / 24; // to calculate date of arrival
+        hr = hr / 24; // to calculate date of arrival (referring to return)
         day = day + hr;
         if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
         {
@@ -212,9 +243,10 @@ public:
         cout << day << "/" << month << "/" << year;
         cout << "\n\nSubject\t\tCost(for 1)\tNo of ppl\tTotal";
         cout << "\n\nTravel\t\t" << dcst << "\t\t   " << num1 << "\t\t" << num1 * dcst;
-        gttl += num1 * dcst;
+        gttl += num1 * dcst;  // cost of tickets for all members
         cout << "\nClass\t\t" << Class << "\t\t   " << num1 << "\t\t" << Class * num1;
-        gttl += Class * num1;
+        gttl += Class * num1;  // cost of class status for all members
+        // cost of extra expenses
         if (pool == 1)
         {
             cout << "\nSwimming Pool\t" << swpool << "\t\t   " << num1 << "\t\t" << swpool * num1;
@@ -240,6 +272,7 @@ public:
             cout << "\nSpa\t\t" << sp << "\t\t   " << num1 << "\t\t" << sp * num1;
             gttl += dcst * num1;
         }
+        // total cost printing ~ number formatting
         cout << "\nGrand Total:Rs ";
         if (gttl > 100000) // to provide comma's for grandtotal
         {
