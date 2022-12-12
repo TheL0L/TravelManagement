@@ -9,8 +9,9 @@ Any completed tasks should be marked as completed instead of removing
 
 
 * System("cls")
-    - might cause issues when debugging, should research into it.
+solved:    - might cause issues when debugging, should research into it.
         for now, if any issues with printing arise, try removing it.
+        it's a bug related to the working environment in vs code.
 
 * Input
     - most string inputs ignore first character.
