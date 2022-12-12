@@ -14,7 +14,7 @@ solved:    - might cause issues when debugging, should research into it.
         it's a bug related to the working environment in vs code.
 
 * Input
-    - most string inputs ignore first character.
+fixed:    - most string inputs ignore first character.
     - written in C style, should be rewritten to C++ style.
 
 * Output
