@@ -5,4 +5,5 @@
 INITIALL.txt
 PersonalDetails.txt
 TravelDetails.txt
-temp1.txt
+
+*.bin

@@ -41,7 +41,7 @@ void family(int c, int &flag) // to display familyname+to check for record
 {
     flag = 0;
     system("cls");
-    ifstream ifl("PersonalDetails.txt", ios::binary);
+    ifstream ifl("personal_details.bin", ios::binary);
     if (!ifl)
         cout << "\nError";
     ifl.read((char *)&PD, sizeof(PD));
@@ -71,7 +71,7 @@ void editp(int c) // to edit persdetails
     ofstream ofl2("temp1.txt", ios::binary);
     if (!ofl2)
         cout << "Error While Opening File";
-    ifstream ifl4("PersonalDetails.txt", ios::binary);
+    ifstream ifl4("personal_details.bin", ios::binary);
     if (!ifl4)
         cout << "Error While Opening File";
     ifl4.read((char *)&PD, sizeof(PD));
@@ -92,8 +92,8 @@ void editp(int c) // to edit persdetails
             ifl4.read((char *)&PD, sizeof(PD));
         }
     }
-    remove("PersonalDetails.txt");
-    rename("temp1.txt", "PersonalDetails.txt");
+    remove("personal_details.bin");
+    rename("temp1.txt", "personal_details.bin");
     ifl4.close();
     ofl2.close();
 }
@@ -103,7 +103,7 @@ void editt(int c) // to edit travdetails
     ofstream ofl2("temp1.txt", ios::binary);
     if (!ofl2)
         cout << "Error While Opening File";
-    ifstream ifl4("TravelDetails.txt", ios::binary);
+    ifstream ifl4("travel_details.bin", ios::binary);
     if (!ifl4)
         cout << "Error While Opening File";
     ifl4.read((char *)&TD, sizeof(TD));
@@ -124,8 +124,8 @@ void editt(int c) // to edit travdetails
             ifl4.read((char *)&TD, sizeof(TD));
         }
     }
-    remove("TravelDetails.txt");
-    rename("temp1.txt", "TravelDetails.txt");
+    remove("travel_details.bin");
+    rename("temp1.txt", "travel_details.bin");
     ifl4.close();
     ofl2.close();
 }
@@ -135,7 +135,7 @@ void deletion(int c) // common delete func()
     ofstream ofl2("temp1.txt", ios::binary);
     if (!ofl2)
         cout << "Error While Opening File";
-    ifstream ifl4("PersonalDetails.txt", ios::binary);
+    ifstream ifl4("personal_details.bin", ios::binary);
     if (!ifl4)
         cout << "Error While Opening File";
     ifl4.read((char *)&PD, sizeof(PD));
@@ -147,14 +147,14 @@ void deletion(int c) // common delete func()
         }
         ifl4.read((char *)&PD, sizeof(PD));
     }
-    remove("PersonalDetails.txt");
-    rename("temp1.txt", "PersonalDetails.txt");
+    remove("personal_details.bin");
+    rename("temp1.txt", "personal_details.bin");
     ofl2.close();
     ifl4.close();
     ofstream ofl3("temp2.txt", ios::binary);
     if (!ofl3)
         cout << "\nError While Opening File";
-    ifstream ifl5("TravelDetails.txt", ios::binary);
+    ifstream ifl5("travel_details.bin", ios::binary);
     if (!ifl5)
         cout << "\nError While Opening File";
     ifl5.read((char *)&TD, sizeof(TD));
@@ -168,8 +168,8 @@ void deletion(int c) // common delete func()
     }
     ofl3.close();
     ifl5.close();
-    remove("TravelDetails.txt");
-    rename("temp1.txt", "TravelDetails.txt");
+    remove("travel_details.bin");
+    rename("temp1.txt", "travel_details.bin");
     cout << "\n\nDeletion Completed!";
 }
 
@@ -208,7 +208,7 @@ int main()
                 {
                     code++;
                     PD.p_input(code);
-                    ofstream ofl("PersonalDetails.txt", ios::binary | ios::app);
+                    ofstream ofl("personal_details.bin", ios::binary | ios::app);
                     if (!ofl)
                         cout << "\n\nSorry.The File Cannot Be Opened For Writing" << endl;
                     ofl.write((char *)&PD, sizeof(PD));
@@ -218,7 +218,7 @@ int main()
                 else if (opt1 == 2)
                 {
                     TD.t_input(code);
-                    ofstream ofl1("TravelDetails.txt", ios::binary | ios::app);
+                    ofstream ofl1("travel_details.bin", ios::binary | ios::app);
                     if (!ofl1)
                         cout << "\n\n\t\tSorry.The File Cannot Be Opened For Writing" << endl;
                     ofl1.write((char *)&TD, sizeof(TD));
@@ -252,7 +252,7 @@ int main()
                     cin >> opt2;
                     if (opt2 == 1)
                     {
-                        ifstream ifl("PersonalDetails.txt", ios::binary);
+                        ifstream ifl("personal_details.bin", ios::binary);
                         if (!ifl)
                             cout << "\nError";
                         ifl.read((char *)&PD, sizeof(PD));
@@ -269,7 +269,7 @@ int main()
                     }
                     else if (opt2 == 2)
                     {
-                        ifstream ifl1("TravelDetails.txt", ios::binary);
+                        ifstream ifl1("travel_details.bin", ios::binary);
                         if (!ifl1)
                             cout << "\nError";
                         ifl1.read((char *)&TD, sizeof(TD));
@@ -328,7 +328,7 @@ int main()
                     }
                     else if (opt2 == 4)
                     {
-                        ifstream ifl3("PersonalDetails.txt", ios::binary);
+                        ifstream ifl3("personal_details.bin", ios::binary);
                         if (!ifl3)
                             cout << "\nError";
                         ifl3.read((char *)&PD, sizeof(PD));
@@ -340,7 +340,7 @@ int main()
                             }
                             ifl3.read((char *)&PD, sizeof(PD));
                         }
-                        ifstream ifl2("TravelDetails.txt", ios::binary);
+                        ifstream ifl2("travel_details.bin", ios::binary);
                         if (!ifl2)
                             cout << "\nError";
                         ifl2.read((char *)&TD, sizeof(TD));
