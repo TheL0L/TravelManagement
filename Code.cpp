@@ -13,9 +13,6 @@ long int code;
 #include "PersonalDetails.h"
 #include "TravelDetails.h"
 
-
-
-
 void family(int c, int &flag) // to display familyname+to check for record
 {
     flag = 0;
@@ -75,7 +72,6 @@ void editp(int c) // to edit persdetails
     rename("temp1.txt", "PersonalDetails.txt");
     ifl4.close();
     ofl2.close();
-    getch();
 }
 
 void editt(int c) // to edit travdetails
@@ -108,7 +104,6 @@ void editt(int c) // to edit travdetails
     rename("temp1.txt", "TravelDetails.txt");
     ifl4.close();
     ofl2.close();
-    getch();
 }
 
 void deletion(int c) // common delete func()
@@ -152,7 +147,6 @@ void deletion(int c) // common delete func()
     remove("TravelDetails.txt");
     rename("temp1.txt", "TravelDetails.txt");
     cout << "\n\nDeletion Completed!";
-    getch();
 }
 
 int main()
@@ -209,7 +203,6 @@ int main()
                     system("cls");
                     cout << "\n\n\n\n!!!!!Your Details Have Been Registered.Please Make A Note Of This Code: " << code;
                     cout << "\n\n* For modifications,Please visit 'existing user' section in the main screen";
-                    getch();
                 }
             } while (opt1 != 3);
             break;
@@ -223,10 +216,7 @@ int main()
                 break;
             }
             family(acceptcode, flag);
-            cout << endl
-                 << endl
-                 << "\t\t\t\tCode no:" << acceptcode;
-            getch();
+            cout << endl << endl << "\t\t\t\tCode no:" << acceptcode;
             if (flag == 1)
             {
                 do
@@ -354,11 +344,9 @@ int main()
                 cout << "\nError";
             fil.write((char *)&code, sizeof(code));
             fil.close();
-            getch();
             exit(0);
             break;
         }
-        getch();
     } while (1); // infinite loop till exit selected
     return 0;
 }

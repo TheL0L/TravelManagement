@@ -142,7 +142,6 @@ public:
             cout << "\nSpa";
         if (salon == 1)
             cout << "\nBeauty Salon";
-        getch();
     }
     void compute()
     {
@@ -288,7 +287,6 @@ public:
         if (gttl < 10)
             cout << "00";
         cout << "\nAll Travellers below the age of 5 have not been charged";
-        getch();
     }
     int gtcode();
     void accept(int);

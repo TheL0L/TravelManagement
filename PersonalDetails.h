@@ -36,13 +36,13 @@ public:
         num = 0;
         cout << "\n\n:::::::::::::::::::::: PERSONAL DETAILS ::::::::::::::::::::::\n";
         cout << "\n* Please fill in the details:\n1.Family Name: ";
-        cin.ignore();
+        cin.sync();
         cin.getline(FamilyName, 30);
         cout << "\n2.Address: ";
-        cin.ignore();
+        cin.sync();
         cin.getline(Address, 50);
         cout << "\n3.Contact Number(10 Digit Mobile Number) : ";
-        cin.ignore();
+        cin.sync();
         cin.getline(PhoneNumber, 15);
         cout << "\nEnter The No of People Travelling: ";
         cin >> numppl;
@@ -52,18 +52,17 @@ public:
             cout << "\nPlease Enter The Details of each Member/Members: " << endl;
             for (int i = 0; i < numppl; i++)
             {
-                cout << endl
-                     << "\nMember " << i + 1;
+                cout << endl << "\nMember " << i + 1;
                 cout << "\n~~~~~~~~~~~~~~~";
                 cout << "\nFirst Name: ";
-                cin.ignore();
+                cin.sync();
                 cin.getline(Name[i], 20);
                 cout << "\nAge: ";
                 cin >> age[i];
                 cout << "\nSex (M/F): ";
                 cin >> gender[i];
                 cout << "\nPassport Number: ";
-                cin.ignore();
+                cin.sync();
                 cin.getline(PassportNum[i], 9);
                 if (age[i] < 5)
                 {
@@ -79,13 +78,11 @@ public:
         cout << "\nFamily Name: " << FamilyName << endl;
         cout << "Address: " << Address << endl;
         cout << "Phone Number: " << PhoneNumber << endl;
-        cout << "\nName\t\tAge\t\tSex\t\tPassport Number\n"
-             << endl;
+        cout << "\nName\t\tAge\t\tSex\t\tPassport Number\n" << endl;
         for (int i = 0; i < numppl; i++)
         {
             cout << "\t" << Name[i] << "\t\t" << age[i] << "\t\t" << gender[i] << "\t\t" << PassportNum[i] << endl;
         }
-        getch();
     }
     void givefam();
     int givecode();
