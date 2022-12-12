@@ -13,6 +13,30 @@ long int code;
 #include "PersonalDetails.h"
 #include "TravelDetails.h"
 
+void write_client_code()
+{
+    ofstream data_file("client_code.bin", ios::binary); // storing code value
+    if (!data_file)
+        cout << "Couldn't save updated client code to 'client_code.bin'." << endl;
+    else
+    {
+        data_file.write((char *)&code, sizeof(code));
+        data_file.close();
+    }
+}
+
+void read_client_code()
+{
+    ifstream data_file("client_code.bin", ios::binary); // storing code value
+    if (!data_file)
+        cout << "Couldn't read 'client_code.bin'." << endl;
+    else
+    {
+        data_file.read((char *)&code, sizeof(code));
+        data_file.close();
+    }
+}
+
 void family(int c, int &flag) // to display familyname+to check for record
 {
     flag = 0;
@@ -153,9 +177,7 @@ int main()
 {
     system("cls");
 
-    ifstream fl("INITIAL.txt", ios::binary); // initialisation of code
-    fl.read((char *)&code, sizeof(code));
-    fl.close();
+    read_client_code();
     int opt, opt1, opt2, opt3, opt4;
     int acceptcode, flag;
     system("cls");
@@ -191,6 +213,7 @@ int main()
                         cout << "\n\nSorry.The File Cannot Be Opened For Writing" << endl;
                     ofl.write((char *)&PD, sizeof(PD));
                     ofl.close();
+                    write_client_code();
                 }
                 else if (opt1 == 2)
                 {
@@ -339,11 +362,7 @@ int main()
             }
             break;
         case 3:
-            ofstream fil("INITIALL.txt", ios::binary); // storing code value
-            if (!fil)
-                cout << "\nError";
-            fil.write((char *)&code, sizeof(code));
-            fil.close();
+            write_client_code();
             exit(0);
             break;
         }
