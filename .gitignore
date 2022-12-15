@@ -7,3 +7,8 @@ PersonalDetails.txt
 TravelDetails.txt
 
 *.bin
+Debug/
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
