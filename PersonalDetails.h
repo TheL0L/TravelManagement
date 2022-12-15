@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include "InputHandler.cpp"
 using namespace std;
 
 /*
@@ -36,14 +37,11 @@ public:
         num = 0;
         cout << "\n\n:::::::::::::::::::::: PERSONAL DETAILS ::::::::::::::::::::::\n";
         cout << "\n* Please fill in the details:\n1.Family Name: ";
-        cin.sync();
-        cin.getline(FamilyName, 30);
+        StringInput(FamilyName, 30);
         cout << "\n2.Address: ";
-        cin.sync();
-        cin.getline(Address, 50);
+        StringInput(Address, 50);
         cout << "\n3.Contact Number(10 Digit Mobile Number) : ";
-        cin.sync();
-        cin.getline(PhoneNumber, 15);
+        StringInput(PhoneNumber, 15);
         cout << "\nEnter The No of People Travelling: ";
         cin >> numppl;
         system("cls");
@@ -55,15 +53,13 @@ public:
                 cout << endl << "\nMember " << i + 1;
                 cout << "\n~~~~~~~~~~~~~~~";
                 cout << "\nFirst Name: ";
-                cin.sync();
-                cin.getline(Name[i], 20);
+                StringInput(Name[i], 20);
                 cout << "\nAge: ";
                 cin >> age[i];
                 cout << "\nSex (M/F): ";
                 cin >> gender[i];
                 cout << "\nPassport Number: ";
-                cin.sync();
-                cin.getline(PassportNum[i], 9);
+                StringInput(PassportNum[i], 9);
                 if (age[i] < 5)
                 {
                     num++; // to calculate no of travellers below 5 yrs
