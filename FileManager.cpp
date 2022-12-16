@@ -54,7 +54,7 @@ public:
     }
 
     /* Appends data to end of file. */
-    bool AppendToFile(const char* filename, DataType& data)
+    bool AppendToFile(const char* filename, const DataType& data)
     {
         // verify that chunk isn't present in file
         int offset = FindOffset(filename, data.ID, false);
@@ -85,7 +85,7 @@ public:
     }
 
     /* Inserts data to chunk specified by ID. */
-    bool InsertToFile(const char* filename, DataType& data, int id)
+    bool InsertToFile(const char* filename, const DataType& data, int id)
     {
         // seek chunk designated for overwrite
         int offset = FindOffset(filename, id, true);
