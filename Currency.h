@@ -13,7 +13,7 @@ private:
 
 public:
     Currency();
-    Currency(float value, CurrencyType type = CurrencyType::USD);
+    Currency(float value, CurrencyType type);
     Currency(Currency& other);
 
     void ChangeType(CurrencyType type);
