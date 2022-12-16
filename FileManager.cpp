@@ -179,6 +179,34 @@ public:
         return true;
     }
 
+    /* Reads chunk specified by ID from file and stores in referenced buffer. */
+    bool ReadFromFile(const char* filename, int id, DataType& out_buffer)
+    {
+        // seek requested chunk
+        int offset = FindOffset(filename, id, true);
+        if (offset == -1)
+            return false;
 
+        // open file handler
+        ofstream reader(filename, ios::binary);
+        if (!writer)
+        {
+            cout << "Couldn't open file '" << filename << "' for reading." << endl;
+            return false;
+        }
+        else
+        {
+            // read chunk
+            writer.seekp(offset);
+            writer.write(reinterpret_cast<char*>(&out_buffer), sizeof(DataType));
+
+            // close handler
+            writer.close();
+        }
+
+        return true;
+    }
+
+    
 };
 
