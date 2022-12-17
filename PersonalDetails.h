@@ -3,35 +3,32 @@
 
 /*
 fields:
-    TravelCode - each travel entry has 'unique' id by which the details can be accessed
-    age[] - array of family member ages
-    num - number of kids in family
-    numppl - total number of family members (adults + kids)
-    Name[] - array of family member names
-    Address[] - string containing family address
-    PhoneNumber[] - string containing contact phone number for the family
-    gender[] - char array containing M/F as gender representaion of family members
-    PassportNum[] - array of strings containing passport numbers (ids) of family members
-    FamilyName[] - string representing the family name
+    ID - each travel entry has 'unique' id by which the details can be accessed
+    ages[] - array of family member ages
+    children_count - number of kids in family
+    members_count - total number of family members (adults + kids)
+    names[] - array of family member names
+    address[] - string containing family address
+    phone_number[] - string containing contact phone number for the family
+    genders[] - char array containing M/F as gender representaion of family members
+    passports[] - array of strings containing passport numbers of family members
+    family_name[] - string representing the family name
 
 methods:
-    p_input(cd) - function gets the TravelCode as arg, and collects family details from input
+    p_input(travel_code) - function gets the TravelCode as arg, and collects family details from input
     p_output() - function prints family details
-    givefam() - function prints family name
-    givecode() - function returns TravelCode
-    givenum() - function returns the number of adults (total members - kids)
+    adults_count() - Get number of adults
+    get_travel_code() - Get TravelCode, which is ID
+
 */
-
-
 struct PersonalDetails // class for collecting the personal details
 {
-    int TravelCode, age[20], num, numppl;
-    char Name[20][20], Address[50], PhoneNumber[15], gender[20], PassportNum[9][9], FamilyName[30];
+    int ID, ages[20], children_count, members_count;
+    char names[20][20], address[50], phone_number[15], genders[20], passports[20][9], family_name[30];
 
-    void p_input(int cd);
+    void p_input(int travel_code);
     void p_output();
-    void givefam();
-    int givecode();
-    int givenum();
+    int adults_count();
+    int get_travel_code();
 };
 

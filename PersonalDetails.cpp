@@ -4,69 +4,67 @@
 using namespace std;
 
 
-void PersonalDetails::p_input(int cd)
+/* Prompt to fill PersonalDetails from inputs. */
+void PersonalDetails::p_input(int travel_code)
 {
-    TravelCode = cd;
-    num = 0;
-    cout << "\n\n:::::::::::::::::::::: PERSONAL DETAILS ::::::::::::::::::::::\n";
-    cout << "\n* Please fill in the details:\n1.Family Name: ";
-    StringInput(FamilyName, 30);
-    cout << "\n2.Address: ";
-    StringInput(Address, 50);
-    cout << "\n3.Contact Number(10 Digit Mobile Number) : ";
-    StringInput(PhoneNumber, 15);
-    cout << "\nEnter The No of People Travelling: ";
-    cin >> numppl;
+    this->ID = travel_code;
+    this->children_count = 0;
+    cout << ":::::::::::::::::::::: PERSONAL DETAILS ::::::::::::::::::::::" << endl;
+    cout << "* Please fill in the details:" << endl << "1.Family Name: ";
+    StringInput(this->family_name, 30);
+    cout << endl << "2.Address: ";
+    StringInput_no_flushing(this->address, 50);
+    cout << endl << "3.Contact Number(10 Digit Mobile Number) : ";
+    StringInput_no_flushing(this->phone_number, 15);
+    cout << endl << "Enter The No of People Travelling: ";
+    cin >> this->members_count;
     system("cls");
-    if (numppl > 0)
+    if (this->members_count > 0)
     {
-        cout << "\nPlease Enter The Details of each Member/Members: " << endl;
-        for (int i = 0; i < numppl; i++)
+        cout << "Please Enter The Details of each Member/Members: " << endl;
+        for (int i = 0; i < this->members_count; i++)
         {
-            cout << endl << "\nMember " << i + 1;
-            cout << "\n~~~~~~~~~~~~~~~";
-            cout << "\nFirst Name: ";
-            StringInput(Name[i], 20);
-            cout << "\nAge: ";
-            cin >> age[i];
-            cout << "\nSex (M/F): ";
-            cin >> gender[i];
-            cout << "\nPassport Number: ";
-            StringInput(PassportNum[i], 9);
-            if (age[i] < 5)
+            cout << endl << "Member " << i + 1 << endl;
+            cout << "~~~~~~~~~~~~~~~" << endl;
+            cout << "First Name: ";
+            StringInput(this->names[i], 20);
+            cout << "Age: ";
+            cin >> this->ages[i];
+            cout << "Sex (M/F): ";
+            cin >> this->genders[i];
+            cout << "Passport Number: ";
+            StringInput(this->passports[i], 9);
+            if (this->ages[i] < 5)
             {
-                num++; // to calculate no of travellers below 5 yrs
+                children_count++; // to calculate no of travellers below 5 yrs
             }
         }
     }
 }
 
+/* Print all PersonalDetails. */
 void PersonalDetails::p_output()
 {
     system("cls");
-    cout << "\n\n******* PERSONAL DETAILS *******" << endl;
-    cout << "\nFamily Name: " << FamilyName << endl;
-    cout << "Address: " << Address << endl;
-    cout << "Phone Number: " << PhoneNumber << endl;
+    cout << "******* PERSONAL DETAILS *******" << endl << endl;
+    cout << "Family Name: " << this->family_name << endl;
+    cout << "Address: " << this->address << endl;
+    cout << "Phone Number: " << this->phone_number << endl;
     cout << "\nName\t\tAge\t\tSex\t\tPassport Number\n" << endl;
-    for (int i = 0; i < numppl; i++)
+    for (int i = 0; i < this->members_count; i++)
     {
-        cout << "\t" << Name[i] << "\t\t" << age[i] << "\t\t" << gender[i] << "\t\t" << PassportNum[i] << endl;
+        cout << "\t" << this->names[i] << "\t\t" << this->ages[i] << "\t\t" << this->genders[i] << "\t\t" << this->passports[i] << endl;
     }
 }
 
-int PersonalDetails::givenum()
+/* Get number of adults. */
+int PersonalDetails::adults_count()
 {
-    return numppl - num;
+    return this->members_count - this->children_count;
 }
 
-void PersonalDetails::givefam()
+/* Get travel code, which is the same as ID. */
+int PersonalDetails::get_travel_code()
 {
-    cout << FamilyName;
+    return this->ID;
 }
-
-int PersonalDetails::givecode()
-{
-    return TravelCode;
-}
-

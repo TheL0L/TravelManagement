@@ -2,96 +2,87 @@
 #include <iostream>
 using namespace std;
 
-
-void TravelDetails::initial()
+/* Prompt to fill TravelDetails from inputs. */
+void TravelDetails::t_input(int travel_code)
 {
-    pool = gym = sports = salon = 0;
-}
-
-void TravelDetails::t_input(int cd)
-{
-    initial();
-    TravelCode = cd;
-    int i = 1, opt;
-    system("cls");
+    this->ID = travel_code;
+    int choice;
     do
     {
         system("cls");
-        cout << endl;
-        cout << "\nTRAVEL DETAILS\n";
-        cout << "~~~~~~~~~~~~~~~~~";
-        cout << "\nPlease enter the following details for your journey:";
-        cout << "\n*Note:Options marked with '*' are compulsory.\tPlease do select them.";
-        cout << "\n*1.Boarding and Destination\n*2.Date of Departure\n*3.Class\n4.Swimming Pool\n5.Gymnasuim\n6.Sports\n7.Salon\n8.Spa\n9.Back\n";
-        cin >> opt;
-        switch (opt)
+        cout << "TRAVEL DETAILS" << endl;
+        cout << "~~~~~~~~~~~~~~~~~" << endl;
+        cout << "Please enter the following details for your journey:" << endl;
+        cout << "*Note:Options marked with '*' are compulsory.\tPlease do select them." << endl << endl;
+        cout << "*1.Boarding and Destination\n*2.Date of Departure\n*3.Class\n4.Swimming Pool\n5.Gymnasuim\n6.Sports\n7.Salon\n8.Spa\n9.Back\n";
+        cin >> choice;
+        cin.ignore();  // in case a non numerical input is recieved
+        switch (choice)
         {
         case 1:
             system("cls");
-            cout << "\nSelect Boarding point:\n1.Mumbai\n2.Cochin\n3.Chennai";
-            cin >> BoardingPoint;
-            cout << "\n*** Select Destination ***\n";
+            cout << "Select Boarding point:\n1.Mumbai\n2.Cochin\n3.Chennai" << endl;
+            cin >> this->boarding_point_id;
+            cout << "\n*** Select Destination ***" << endl;
             cout << "1.New York\t\t6.Dubai\t\t\t11.Antananariv";
             cout << "\n2.Miami\t\t7.Lisbon\t\t12.Cairo";
             cout << "\n3.Rio De Janeiro\t8.London\t\t13.Perth";
             cout << "\n4.Colombo\t\t9.Copenhagen\t\t14.Sydney";
-            cout << "\n5.Hong Kong\t\t10.Cape Town\t\t15.Wellington\n";
-            cin >> DisembarkingPoint;
+            cout << "\n5.Hong Kong\t\t10.Cape Town\t\t15.Wellington" << endl;
+            cin >> this->disembarking_point_id;
             break;
         case 2:
             system("cls");
-            cout << "\n\nEnter your preferred date(DD MM YYYY) of departure: ";
-            cin >> day >> month >> year;
+            cout << "Enter your preferred date(DD MM YYYY) of departure: ";
+            cin >> this->day >> this->month >> this->year;
             break;
         case 3:
             system("cls");
-            cout << "\n\nEnter The Choice OF Class\n1.First Class\n2.Business Class\n3.Economy Class\n";
-            cin >> Class;
+            cout << "Enter The Choice OF Class\n1.First Class\n2.Business Class\n3.Economy Class" << endl;
+            cin >> this->flight_class;
             break;
         case 4:
             system("cls");
-            cout << "\n\nWould You Like To Avail The Facility Of A Swimming Pool\n0.No\n1.Yes\n";
-            cin >> pool;
+            cout << "Would You Like To Avail The Facility Of A Swimming Pool\n0.No\n1.Yes\n";
+            cin >> this->pool;
             break;
         case 5:
             system("cls");
-            cout << "\n\nWould You Like To Avail The Facility Of A Gymnasium\n0.No\n1.Yes\n";
-            cin >> gym;
+            cout << "Would You Like To Avail The Facility Of A Gymnasium\n0.No\n1.Yes\n";
+            cin >> this->gym;
             break;
         case 6:
             system("cls");
-            cout << "\n\nWould You Like To Avail The Sports Facilities Offered\n0.No\n1.Yes\n";
-            cin >> sports;
+            cout << "Would You Like To Avail The Sports Facilities Offered\n0.No\n1.Yes\n";
+            cin >> this->sports;
             break;
         case 7:
             system("cls");
-            cout << "\n\nWould You Like To Avail The Facility Of Beauty Salon\n0.No\n1.Yes\n";
-            cin >> salon;
+            cout << "Would You Like To Avail The Facility Of Beauty Salon\n0.No\n1.Yes\n";
+            cin >> this->salon;
             break;
         case 8:
             system("cls");
-            cout << "\n\nWould You Like To Avail The Facility Of Spa\n0.No\n1.Yes\n";
-            cin >> spa;
-            break;
-        case 9:
-            i = 0;
+            cout << "Would You Like To Avail The Facility Of Spa\n0.No\n1.Yes\n";
+            cin >> this->spa;
             break;
         }
-    } while (i == 1);
+    } while (choice != 9);
 }
 
+/* Print all TravelDetails. */
 void TravelDetails::t_output()
 {
         system("cls");
-        cout << "\n\n##############TRAVEL DETAILS##############";
+        cout << "##############TRAVEL DETAILS##############" << endl;
         cout << "\nBoarding Point: ";
-        boardpt(BoardingPoint);
+        boarding_name(this->boarding_point_id);
         cout << "\nDestination: ";
-        dest(DisembarkingPoint);
+        disembarking_name(this->disembarking_point_id);
         cout << "\nDate of departure: ";
         cout << day << "/" << month << "/" << year;
         cout << "\nClass: ";
-        switch (Class)
+        switch (this->flight_class)
         {
         case 1:
             cout << "First Class";
@@ -103,20 +94,21 @@ void TravelDetails::t_output()
             cout << "Economy Clss";
             break;
         }
-        cout << "\n\n\n\tFacilities availed for are:";
-        if (pool == 1)
+        cout << endl << "\n\n\n\tFacilities availed for are:";
+        if (this->pool)
             cout << "\nSwimming Pool";
-        if (gym == 1)
+        if (this->gym)
             cout << "\n";
-        if (sports == 1)
+        if (this->sports)
             cout << "\n";
-        if (spa == 1)
+        if (this->spa)
             cout << "\nSpa";
-        if (salon == 1)
+        if (this->salon)
             cout << "\nBeauty Salon";
     }
 
-void TravelDetails::compute()
+/* Calculate expenses and print them. */
+void TravelDetails::compute_expenses()
 {
     /*
         gttl - total travel expenses
@@ -128,10 +120,10 @@ void TravelDetails::compute()
         ttr - ? ~ never used
     */
     long int gttl = 0, hr, dcst, cls, cabn, swpool = 5000, gm = 2000, spfts = 7500, slon = 6000, sp = 20000, ttr = 500;
-    switch (DisembarkingPoint)  // assign prices for activities and ticket per destination
+    switch (this->disembarking_point_id)  // assign prices for activities and ticket per destination
     {
-    case 1:;
-    case 2:;
+    case 1:
+    case 2:
     case 3:
         hr = 30 * 24;
         dcst = 250000;
@@ -161,7 +153,8 @@ void TravelDetails::compute()
         dcst = 120000;
         break;
     }
-    switch (Class)
+    
+    switch (this->flight_class)
     {
     case 1:
         cls = 1500;
@@ -172,14 +165,17 @@ void TravelDetails::compute()
     case 3:
         cls = 5000;
     }
+
     system("cls");
-    cout << "\n\n:::::::::::::::::::::: BILL ::::::::::::::::::::::::::";
-    cout << "\nBoarding point: ";
-    boardpt(BoardingPoint);
+    cout << ":::::::::::::::::::::: BILL ::::::::::::::::::::::::::" << endl;
+    cout << "Boarding point: ";
+    boarding_name(this->boarding_point_id);
     cout << "\nDestination: ";
-    dest(DisembarkingPoint);
+    disembarking_name(this->disembarking_point_id);
     cout << "\nDate of Departure: ";
-    cout << day << "/" << month << "/" << year;
+    cout << day << "/" << month << "/" << year << endl;
+
+    // hr refers to the period of stay?
     hr = hr / 24; // to calculate date of arrival (referring to return)
     day = day + hr;
     if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
@@ -211,39 +207,42 @@ void TravelDetails::compute()
         month = 1;
         year++;
     }
-    cout << "\nDate of Arrival: ";
-    cout << day << "/" << month << "/" << year;
-    cout << "\n\nSubject\t\tCost(for 1)\tNo of ppl\tTotal";
-    cout << "\n\nTravel\t\t" << dcst << "\t\t   " << num1 << "\t\t" << num1 * dcst;
-    gttl += num1 * dcst;  // cost of tickets for all members
-    cout << "\nClass\t\t" << Class << "\t\t   " << num1 << "\t\t" << Class * num1;
-    gttl += Class * num1;  // cost of class status for all members
+
+    cout << "Date of Arrival: ";
+    cout << day << "/" << month << "/" << year << endl << endl;
+    cout << "Subject\t\tCost(for 1)\tNo of adults\tTotal";
+    cout << "\n\nTravel\t\t" << dcst << "\t\t   " << this->adults_count << "\t\t" << this->adults_count * dcst;
+    gttl += this->adults_count * dcst;  // cost of tickets for all members
+    cout << "\nClass\t\t" << cls << "\t\t   " << this->adults_count << "\t\t" << cls * this->adults_count;
+    gttl += cls * this->adults_count;  // cost of class status for all members
+
     // cost of extra expenses
-    if (pool == 1)
+    if (this->pool)
     {
-        cout << "\nSwimming Pool\t" << swpool << "\t\t   " << num1 << "\t\t" << swpool * num1;
-        gttl += swpool * num1;
+        cout << "\nSwimming Pool\t" << swpool << "\t\t   " << this->adults_count << "\t\t" << swpool * this->adults_count;
+        gttl += swpool * this->adults_count;
     }
-    if (gym == 1)
+    if (this->gym)
     {
-        cout << "\nGym\t\t" << gm << "\t\t   " << num1 << "\t\t" << gm * num1;
-        gttl += gm * num1;
+        cout << "\nGym\t\t" << gm << "\t\t   " << this->adults_count << "\t\t" << gm * this->adults_count;
+        gttl += gm * this->adults_count;
     }
-    if (sports == 1)
+    if (this->sports)
     {
-        cout << "\nSports\t\t" << spfts << "\t\t   " << num1 << "\t\t" << spfts * num1;
-        gttl += spfts * num1;
+        cout << "\nSports\t\t" << spfts << "\t\t   " << this->adults_count << "\t\t" << spfts * this->adults_count;
+        gttl += spfts * this->adults_count;
     }
-    if (salon == 1)
+    if (this->salon)
     {
-        cout << "\nSalon\t\t" << slon << "\t\t   " << num1 << "\t\t" << slon * num1;
-        gttl += slon * num1;
+        cout << "\nSalon\t\t" << slon << "\t\t   " << this->adults_count << "\t\t" << slon * this->adults_count;
+        gttl += slon * this->adults_count;
     }
-    if (spa == 1)
+    if (this->spa)
     {
-        cout << "\nSpa\t\t" << sp << "\t\t   " << num1 << "\t\t" << sp * num1;
-        gttl += dcst * num1;
+        cout << "\nSpa\t\t" << sp << "\t\t   " << this->adults_count << "\t\t" << sp * this->adults_count;
+        gttl += dcst * this->adults_count;
     }
+
     // total cost printing ~ number formatting
     cout << "\nGrand Total:Rs ";
     if (gttl > 100000) // to provide comma's for grandtotal
@@ -259,32 +258,44 @@ void TravelDetails::compute()
     cout << gttl;
     if (gttl < 10)
         cout << "00";
-    cout << "\nAll Travellers below the age of 5 have not been charged";
+    cout << "\nAll Travellers below the age of 5 have not been charged" << endl;
 }
 
-void TravelDetails::accept(int c)
+/* Update adults count for corrent expense calculations. */
+void TravelDetails::update_adults(int count)
 {
-    num1 = c;
+    this->adults_count = count;
 }
 
-int TravelDetails::gtcode()
+/* Get travel code, which is the same as ID. */
+int TravelDetails::get_travel_code()
 {
-    return TravelCode;
+    return this->ID;
 }
 
-void boardpt(int c) // for easy o/p
+/* Print boarding point name inline by its id. */
+void boarding_name(int id)
 {
-    if (c == 1)
+    switch (id)
+    {
+    case 1:
         cout << "Mumbai\t";
-    if (c == 2)
+        break;
+
+    case 2:
         cout << "Cochin\t";
-    if (c == 3)
+        break;
+
+    case 3:
         cout << "Chennai\t";
+        break;
+    }
 }
 
-void dest(int d) // for easy o/p
+/* Print disembarking point name inline by its id. */
+void disembarking_name(int id)
 {
-    switch (d)
+    switch (id)
     {
     case 1:
         cout << "New York";
@@ -333,3 +344,4 @@ void dest(int d) // for easy o/p
         break;
     }
 }
+
