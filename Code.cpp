@@ -192,9 +192,6 @@ void print_same_destination_implement(int tc) {
         return;
     }
 
-    data.t_output();//check for me to see if i read from the file correctly
-
-
     //we take the destination with data.disembarking_point_id and we'll give it to a temporary arguemnt//
     int dest = data.disembarking_point_id;
 
@@ -306,7 +303,8 @@ int main()
                     cout << "\n\n@@@@@@@@@Information Centre@@@@@@@@@";
                     cout << "\n~~~~~~~";
                     cout << "\n\nPlease select the type of operation that you would like to perform:";
-                    cout << "\n1.View Personal Details\n\n2.View Travel Details\n\n3.Edit Details\n\n4.Compute Bill\n\n 5.Carmel func check\n\n6.Back\n";
+                    cout << "\n1.View Personal Details\n2.View Travel Details\n3.Edit Details" << endl;
+                    cout << "4.Compute Bill\n\n5.Print all families with similar destination\n\n6.Back" << endl;
                     cin >> opt2;
                     if (opt2 == 1)
                     {
