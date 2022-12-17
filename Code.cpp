@@ -226,6 +226,7 @@ int main()
                     system("cls");
                     cout << "\n\n\n\n!!!!!Your Details Have Been Registered.Please Make A Note Of This Code: " << code;
                     cout << "\n\n* For modifications,Please visit 'existing user' section in the main screen";
+                    system("pause");
                 }
             } while (opt1 != 3);
             break;
@@ -324,7 +325,7 @@ int main()
                             case 3:
                                 break;
                             }
-                        } while (opt3 != 3);
+                        } while (opt != 3);
                     }
                     else if (opt2 == 4)
                     {
