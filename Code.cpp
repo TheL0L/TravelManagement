@@ -47,19 +47,18 @@ void family(int c, int &flag) // to display familyname+to check for record
     if (!ifl)
         cout << "\nError";
     ifl.read((char *)&PD, sizeof(PD));
-    while (!ifl.eof())
+    do
     {
-        if (PD.givecode() == c)
+        if (PD.get_travel_code() == c)
         {
             flag = 1;
             break;
         }
         ifl.read((char *)&PD, sizeof(PD));
-    }
+    } while (!ifl.eof());
     if (flag == 1)
     {
-        PD.givefam();
-        cout << "'s FAMILY DATABASE **";
+        cout << PD.family_name << "'s FAMILY DATABASE **";
     }
     else
     {
@@ -81,7 +80,7 @@ void editp(int c) // to edit persdetails
     ifl4.read((char *)&PD, sizeof(PD));
     while (!ifl4.eof())
     {
-        if (PD.givecode() == c)
+        if (PD.get_travel_code() == c)
         {
             system("cls");
             cout << "Please Enter the New details of the record" << endl;
@@ -115,7 +114,7 @@ void editt(int c) // to edit travdetails
     ifl4.read((char *)&TD, sizeof(TD));
     while (!ifl4.eof())
     {
-        if (TD.gtcode() == c)
+        if (TD.get_travel_code() == c)
         {
             system("cls");
             cout << "Please Enter the New details of the record" << endl;
@@ -150,7 +149,7 @@ void deletion(int c) // common delete func()
     ifl4.read((char *)&PD, sizeof(PD));
     while (!ifl4.eof())
     {
-        if (PD.givecode() != c)
+        if (PD.get_travel_code() != c)
         {
             ofl2.write((char *)&PD, sizeof(PD));
         }
@@ -169,7 +168,7 @@ void deletion(int c) // common delete func()
     ifl5.read((char *)&TD, sizeof(TD));
     while (!ifl5.eof())
     {
-        if (TD.gtcode() != c)
+        if (TD.get_travel_code() != c)
         {
             ofl3.write((char *)&TD, sizeof(TD));
         }
@@ -213,34 +212,40 @@ int main()
                 system("cls");
                 cout << "\n\n    NEW USER\n";
                 cout << "*********\n\n";
-                cout << "\n\nChoose the type of details you want to enter:";
-                cout << "\n\n1.Personal Details\n2.Travel Details\n3.Back\n\n";
+                cout << "\n\nChoose an action:";
+                cout << "\n\n1.Enter Personal and Travel Details\n2.Back\n\n";
                 cin >> opt1;
+                cin.ignore();  // in case a non numeric input is recieved
                 if (opt1 == 1)
                 {
                     code++;
                     PD.p_input(code);
+                    TD.t_input(code);
+
+                    /* update latest travel code */
+                    write_client_code();
+
+                    /* save personal */
                     ofstream ofl("personal_details.bin", ios::binary | ios::app);
                     if (!ofl)
                         cout << "\n\nSorry.The File Cannot Be Opened For Writing" << endl;
                     ofl.write((char *)&PD, sizeof(PD));
                     ofl.close();
-                    write_client_code();
-                }
-                else if (opt1 == 2)
-                {
-                    TD.t_input(code);
+
+                    /* save travel */
                     ofstream ofl1("travel_details.bin", ios::binary | ios::app);
                     if (!ofl1)
                         cout << "\n\n\t\tSorry.The File Cannot Be Opened For Writing" << endl;
                     ofl1.write((char *)&TD, sizeof(TD));
                     ofl1.close();
+
+
                     system("cls");
                     cout << "\n\n\n\n!!!!!Your Details Have Been Registered.Please Make A Note Of This Code: " << code;
                     cout << "\n\n* For modifications,Please visit 'existing user' section in the main screen";
                     system("pause");
                 }
-            } while (opt1 != 3);
+            } while (opt1 != 2);
             break;
         case 2:
             system("cls");
@@ -249,6 +254,7 @@ int main()
             if (acceptcode > code)
             {
                 cout << "\nNo such record has been created!";
+                system("pause");
                 break;
             }
             family(acceptcode, flag);
@@ -271,7 +277,7 @@ int main()
                         ifl.read((char *)&PD, sizeof(PD));
                         while (!ifl.eof())
                         {
-                            if (PD.givecode() == acceptcode)
+                            if (PD.get_travel_code() == acceptcode)
                             {
                                 break;
                             }
@@ -288,7 +294,7 @@ int main()
                         ifl1.read((char *)&TD, sizeof(TD));
                         while (!ifl1.eof())
                         {
-                            if (TD.gtcode() == acceptcode)
+                            if (TD.get_travel_code() == acceptcode)
                             {
                                 break;
                             }
@@ -347,7 +353,7 @@ int main()
                         ifl3.read((char *)&PD, sizeof(PD));
                         while (!ifl3.eof())
                         {
-                            if (PD.givecode() == acceptcode)
+                            if (PD.get_travel_code() == acceptcode)
                             {
                                 break;
                             }
@@ -359,14 +365,14 @@ int main()
                         ifl2.read((char *)&TD, sizeof(TD));
                         while (!ifl2.eof())
                         {
-                            if (TD.gtcode() == acceptcode)
+                            if (TD.get_travel_code() == acceptcode)
                             {
                                 break;
                             }
                             ifl2.read((char *)&TD, sizeof(TD));
                         }
-                        TD.accept(PD.givenum());
-                        TD.compute();
+                        TD.update_adults(PD.adults_count());
+                        TD.compute_expenses();
                         ifl2.close();
                     }
                     else if (opt2 == 5)
