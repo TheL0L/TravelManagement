@@ -1,6 +1,4 @@
 #pragma once
-#include <iostream>
-using namespace std;
 
 /*
 fields:
@@ -27,17 +25,15 @@ methods:
 void boardpt(int c);
 void dest(int d);
 
-class TravelDetails
+struct TravelDetails
 {
     int TravelCode, day, month, year, num1, BoardingPoint, DisembarkingPoint;
     int Class, pool, gym, sports, salon, spa;
 
-public:
     void initial();
     void t_input(int cd);
     void t_output();
     void compute();
     int gtcode();
     void accept(int);
-} TD;
-
+};

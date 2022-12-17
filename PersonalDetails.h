@@ -1,7 +1,5 @@
 #pragma once
-#include <iostream>
-#include "InputHandler.h"
-using namespace std;
+
 
 /*
 fields:
@@ -25,16 +23,15 @@ methods:
 */
 
 
-class PersonalDetails // class for collecting the personal details
+struct PersonalDetails // class for collecting the personal details
 {
     int TravelCode, age[20], num, numppl;
     char Name[20][20], Address[50], PhoneNumber[15], gender[20], PassportNum[9][9], FamilyName[30];
 
-public:
     void p_input(int cd);
     void p_output();
     void givefam();
     int givecode();
     int givenum();
-} PD;
+};
 

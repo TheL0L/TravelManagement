@@ -1,4 +1,8 @@
 #include "PersonalDetails.h"
+#include <iostream>
+#include "InputHandler.h"
+using namespace std;
+
 
 void PersonalDetails::p_input(int cd)
 {

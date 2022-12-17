@@ -39,6 +39,8 @@ void read_client_code()
 
 void family(int c, int &flag) // to display familyname+to check for record
 {
+    PersonalDetails PD;
+
     flag = 0;
     system("cls");
     ifstream ifl("personal_details.bin", ios::binary);
@@ -68,6 +70,8 @@ void family(int c, int &flag) // to display familyname+to check for record
 
 void editp(int c) // to edit persdetails
 {
+    PersonalDetails PD;
+
     ofstream ofl2("temp1.txt", ios::binary);
     if (!ofl2)
         cout << "Error While Opening File";
@@ -100,6 +104,8 @@ void editp(int c) // to edit persdetails
 
 void editt(int c) // to edit travdetails
 {
+    TravelDetails TD;
+
     ofstream ofl2("temp1.txt", ios::binary);
     if (!ofl2)
         cout << "Error While Opening File";
@@ -132,6 +138,9 @@ void editt(int c) // to edit travdetails
 
 void deletion(int c) // common delete func()
 {
+    PersonalDetails PD;
+    TravelDetails TD;
+
     ofstream ofl2("temp1.txt", ios::binary);
     if (!ofl2)
         cout << "Error While Opening File";
@@ -175,6 +184,9 @@ void deletion(int c) // common delete func()
 
 int main()
 {
+    PersonalDetails PD;
+    TravelDetails TD;
+
     system("cls");
 
     read_client_code();
@@ -325,7 +337,7 @@ int main()
                             case 3:
                                 break;
                             }
-                        } while (opt != 3);
+                        } while (opt3 != 3);
                     }
                     else if (opt2 == 4)
                     {
@@ -358,8 +370,11 @@ int main()
                         ifl2.close();
                     }
                     else if (opt2 == 5)
+                    {
                         break;
-                } while (opt3 != 3);
+                    }
+                    system("pause");
+                } while (opt != 3);
             }
             break;
         case 3:
