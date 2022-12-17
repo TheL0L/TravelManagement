@@ -22,3 +22,21 @@ void StringInput(char* buffer, int max_length)
         cin.getline(buffer, max_length, '\n');
     }
 }
+
+/* Read a string with spaces. */
+void StringInput_no_flushing(char* buffer, int max_length)
+{
+    // write to buffer up to max_length characters or until \n seen
+    cin.getline(buffer, max_length, '\n');
+
+    // check for fails, main reason is input_length > max_length
+    while (cin.fail())
+    {
+        cout << "Your input exeeds max length, please keep it shorter than ";
+        cout << (max_length - 1) << " characters." << endl;
+
+        cin.clear();  // clear input flags
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin.getline(buffer, max_length, '\n');
+    }
+}

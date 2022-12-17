@@ -12,4 +12,4 @@ using std::streamsize;
 In case there were no such previous inputs,
 the function will wait for two inputs and discard the first. */
 void StringInput(char* buffer, int max_length);
-
+void StringInput_no_flushing(char* buffer, int max_length);
