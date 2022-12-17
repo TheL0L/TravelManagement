@@ -188,8 +188,8 @@ public:
             return false;
 
         // open file handler
-        ofstream reader(filename, ios::binary);
-        if (!writer)
+        ifstream reader(filename, ios::binary);
+        if (!reader)
         {
             cout << "Couldn't open file '" << filename << "' for reading." << endl;
             return false;
@@ -197,11 +197,11 @@ public:
         else
         {
             // read chunk
-            writer.seekp(offset);
-            writer.write(reinterpret_cast<char*>(&out_buffer), sizeof(DataType));
+            reader.ignore(offset);
+            reader.read(reinterpret_cast<char*>(&out_buffer), sizeof(DataType));
 
             // close handler
-            writer.close();
+            reader.close();
         }
 
         return true;
