@@ -15,20 +15,20 @@ solved:    - might cause issues when debugging, should research into it.
 
 * Input
 fixed:    - most string inputs ignore first character.
-    - written in C style, should be rewritten to C++ style.
+fixed:    - written in C style, should be rewritten to C++ style.
 
 * Output
     - on multiple occasions doesn't drop to a new line before asking for input.
     - some grammatical mistakes found.
 
 * Refactoring
-WIP:    - split main file into sub files for classes and implementation.
+done:    - split main file into sub files for classes and implementation.
     - main function has many nested 'switch's and 'if's,
         if possible should extract into functions.
 
 * Critical Bugs
     - class: PersonalDetails
-        field: PassportNum
+fixed:        field: PassportNum
             array has only 9 cells, thus can cause OutOfBounds exception.
         
         method: p_input
