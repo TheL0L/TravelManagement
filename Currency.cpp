@@ -89,3 +89,12 @@ Currency::operator float() const
 {
     return this->value;
 }
+
+void PrintAvailable()
+{
+    std::cout << "1. USD" << std::endl;
+    std::cout << "2. Rupee" << std::endl;
+    std::cout << "3. Shekel" << std::endl;
+    std::cout << "4. RUB" << std::endl;
+}
+

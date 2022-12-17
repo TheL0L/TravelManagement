@@ -32,3 +32,7 @@ public:
     /* allows changing value from input streams. */
     friend std::istream& operator>>(std::istream& is, Currency& data);
 };
+
+/* Print available currencies, made for settings menu. */
+void PrintAvailable();
+
