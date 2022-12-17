@@ -1,13 +1,15 @@
 .vs
 .vscode
-*.exe
+Debug/
+x64/
 
 INITIALL.txt
 PersonalDetails.txt
 TravelDetails.txt
 
+*.exe
 *.bin
-Debug/
+
 *.sln
 *.vcxproj
 *.vcxproj.filters
