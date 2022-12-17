@@ -11,7 +11,7 @@ void PersonalDetails::p_input(int travel_code)
     this->children_count = 0;
     cout << ":::::::::::::::::::::: PERSONAL DETAILS ::::::::::::::::::::::" << endl;
     cout << "* Please fill in the details:" << endl << "1.Family Name: ";
-    StringInput(this->family_name, 30);
+    StringInput_no_flushing(this->family_name, 30);
     cout << endl << "2.Address: ";
     StringInput_no_flushing(this->address, 50);
     cout << endl << "3.Contact Number(10 Digit Mobile Number) : ";

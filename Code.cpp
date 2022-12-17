@@ -12,6 +12,7 @@ long int code;
 
 #include "PersonalDetails.h"
 #include "TravelDetails.h"
+#include "FileManager.h"
 
 void write_client_code()
 {
@@ -181,6 +182,44 @@ void deletion(int c) // common delete func()
     cout << "\n\nDeletion Completed!";
 }
 
+void print_same_destination_implement(int tc) {
+    bool success_flag;
+    //we get a travel code and read from the file the data of the user that corresponds with the travel code//
+    TravelDetails data;
+    PersonalDetails p_data;
+    success_flag=FileManager<TravelDetails>().ReadFromFile("travel_details.bin", tc, data);
+    if (success_flag == false) {
+        return;
+    }
+
+    data.t_output();//check for me to see if i read from the file correctly
+
+
+    //we take the destination with data.disembarking_point_id and we'll give it to a temporary arguemnt//
+    int dest = data.disembarking_point_id;
+
+    //we check the disembarking point for each travel code (user) on the file and if it matches with the x (the user who we took his disembarking point) and print family names that fly there as well//
+    cout << "The families that fly to the same destination are:" << endl;
+    for (int i = 1; i <= code; i++) {
+        success_flag=FileManager<TravelDetails>().ReadFromFile("travel_details.bin", i, data);
+
+        if (success_flag == false) {
+            continue;
+        }
+
+        if (dest == data.disembarking_point_id) {
+            success_flag=FileManager<PersonalDetails>().ReadFromFile("personal_details.bin", data.ID, p_data);
+            if (success_flag == false) {
+                continue;
+            }
+            //print the family name somehow//
+            cout<<p_data.family_name<<endl;
+        }
+    }
+
+
+}
+
 int main()
 {
     PersonalDetails PD;
@@ -267,7 +306,7 @@ int main()
                     cout << "\n\n@@@@@@@@@Information Centre@@@@@@@@@";
                     cout << "\n~~~~~~~";
                     cout << "\n\nPlease select the type of operation that you would like to perform:";
-                    cout << "\n1.View Personal Details\n\n2.View Travel Details\n\n3.Edit Details\n\n4.Compute Bill\n\n5.Back\n";
+                    cout << "\n1.View Personal Details\n\n2.View Travel Details\n\n3.Edit Details\n\n4.Compute Bill\n\n 5.Carmel func check\n\n6.Back\n";
                     cin >> opt2;
                     if (opt2 == 1)
                     {
@@ -375,7 +414,12 @@ int main()
                         TD.compute_expenses();
                         ifl2.close();
                     }
-                    else if (opt2 == 5)
+                    else if (opt2 == 5) 
+                    {
+                        system("cls");
+                        print_same_destination_implement(acceptcode);
+                    }
+                    else if (opt2 == 6)
                     {
                         break;
                     }
