@@ -76,7 +76,7 @@ public:
         else
         {
             // append chunk
-            writer.write(reinterpret_cast<char*>(&data), sizeof(DataType));
+            writer.write(reinterpret_cast<const char*>(&data), sizeof(DataType));
 
             // close handler
             writer.close();
@@ -86,7 +86,7 @@ public:
     }
 
     /* Inserts data to chunk specified by ID. */
-    bool InsertToFile(const char* filename, const DataType& data, int id)
+    bool InsertToFile(const char* filename, DataType& data, int id)
     {
         // seek chunk designated for overwrite
         int offset = FindOffset(filename, id, true);

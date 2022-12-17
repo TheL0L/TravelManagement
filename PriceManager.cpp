@@ -8,7 +8,7 @@ bool Add_PriceSheet(const PriceSheet& sheet)
 }
 
 /* Wrapper for editing an existing pricesheet. */
-bool Edit_PriceSheet(const PriceSheet& sheet)
+bool Edit_PriceSheet(PriceSheet& sheet)
 {
     return FileManager<PriceSheet>().InsertToFile(_filename, sheet, sheet.ID);
 }
