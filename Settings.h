@@ -10,9 +10,9 @@ struct Settings
 
     Settings();
     /* Save settings to file. */
-    void LoadSettings();
+    bool LoadSettings();
     /* Load settings from file. */
-    void SaveSettings();
+    bool SaveSettings();
     /* Load ONLY travel code. */
     void LoadTravelCode();
     /* Save ONLY travel code. */
