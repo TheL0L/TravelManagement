@@ -36,23 +36,23 @@ void Fill_PriceSheet(PriceSheet& out_sheet)
 /* Wrapper for adding a new pricesheet. */
 bool Add_PriceSheet(PriceSheet& sheet)
 {
-    return FileManager<PriceSheet>().AppendToFile(_filename, sheet);
+    return FileManager<PriceSheet>().AppendToFile(_pricesheets_filename, sheet);
 }
 
 /* Wrapper for editing an existing pricesheet. */
 bool Edit_PriceSheet(PriceSheet& sheet)
 {
-    return FileManager<PriceSheet>().InsertToFile(_filename, sheet, sheet.ID);
+    return FileManager<PriceSheet>().InsertToFile(_pricesheets_filename, sheet, sheet.ID);
 }
 
 /* Wrapper for removing an existing pricesheet. */
 bool Remove_PriceSheet(PriceSheet& sheet)
 {
-    return FileManager<PriceSheet>().DeleteFromFile(_filename, sheet.ID);
+    return FileManager<PriceSheet>().DeleteFromFile(_pricesheets_filename, sheet.ID);
 }
 
 /* Wrapper for pulling a pricesheet. */
 bool Get_PriceSheet(int sheet_id, PriceSheet& out_sheet)
 {
-    return FileManager<PriceSheet>().ReadFromFile(_filename, sheet_id, out_sheet);
+    return FileManager<PriceSheet>().ReadFromFile(_pricesheets_filename, sheet_id, out_sheet);
 }

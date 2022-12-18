@@ -3,7 +3,7 @@
 #include "FileManager.h"
 #include "PriceSheet.h"
 
-#define _filename "price_sheets.bin"
+#define _pricesheets_filename "price_sheets.bin"
 
 
 /* Utility function for filling a pricesheet. */
