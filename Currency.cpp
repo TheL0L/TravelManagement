@@ -90,11 +90,23 @@ Currency::operator float() const
     return this->value;
 }
 
-void PrintAvailable()
+int PickAvailableCurrency()
 {
-    std::cout << "1. USD" << std::endl;
-    std::cout << "2. Rupee" << std::endl;
-    std::cout << "3. Shekel" << std::endl;
-    std::cout << "4. RUB" << std::endl;
+    int choice;
+    do
+    {
+        std::cout << "1. USD" << std::endl;
+        std::cout << "2. Rupee" << std::endl;
+        std::cout << "3. Shekel" << std::endl;
+        std::cout << "4. RUB" << std::endl;
+
+        std::cin >> choice;
+        std::cin.ignore();  // in case a non numeric input is recieved
+
+        if (1 <= choice && choice <= 4)
+            break;
+    } while (true);
+    
+    return choice;
 }
 

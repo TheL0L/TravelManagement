@@ -34,5 +34,5 @@ public:
 };
 
 /* Print available currencies, made for settings menu. */
-void PrintAvailable();
+int PickAvailableCurrency();
 
