@@ -9,15 +9,15 @@ Settings::Settings()
 }
 
 /* Save settings to file. */
-void Settings::LoadSettings()
+bool Settings::LoadSettings()
 {
-	FileManager<Settings>().ReadFromFile_at_offset(_settings_filename, 0, *this);
+	return FileManager<Settings>().ReadFromFile_at_offset(_settings_filename, 0, *this);
 }
 
 /* Load settings from file. */
-void Settings::SaveSettings()
+bool Settings::SaveSettings()
 {
-	FileManager<Settings>().InsertToFile_at_offset(_settings_filename, *this, 0);
+	return FileManager<Settings>().InsertToFile_at_offset(_settings_filename, *this, 0);
 }
 
 /* Load ONLY travel code. */
