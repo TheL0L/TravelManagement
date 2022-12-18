@@ -8,7 +8,10 @@ PersonalDetails.txt
 TravelDetails.txt
 
 *.exe
-*.bin
+personal_details.bin
+travel_details.bin
+client_code.bin
+settings.bin
 
 *.sln
 *.vcxproj
