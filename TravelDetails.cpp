@@ -1,6 +1,45 @@
 #include "TravelDetails.h"
 #include <iostream>
+#include "PriceSheet.h"
+#include "PriceManager.h"
+#include "Currency.h"
+#include "Settings.h"
 using namespace std;
+
+
+/* Function for date calculation. */
+void CalculateDate(int& day, int& month, int& year, int reserved)
+{
+    if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
+    {
+        if (day > 31)
+        {
+            month = month + 1;
+            day = day % 31;
+        }
+    }
+    if (month == 4 || month == 6 || month == 9 || month == 11)
+    {
+        if (day > 30)
+        {
+            month = month + 1;
+            day = day % 30;
+        }
+    }
+    if (month == 2)
+    {
+        if (day > 28)
+        {
+            month = month + 1;
+            day = day % 28;
+        }
+    }
+    if (month == 13)
+    {
+        month = 1;
+        year++;
+    }
+}
 
 /* Prompt to fill TravelDetails from inputs. */
 void TravelDetails::t_input(int travel_code)
@@ -94,78 +133,55 @@ void TravelDetails::t_output()
             cout << "Economy Clss";
             break;
         }
-        cout << endl << "\n\n\n\tFacilities availed for are:";
+        cout << endl << "\n\n\n\tFacilities availed for are:" << endl;
         if (this->pool)
-            cout << "\nSwimming Pool";
+            cout << "Swimming Pool" << endl;
         if (this->gym)
-            cout << "\n";
+            cout << "Gym" << endl;
         if (this->sports)
-            cout << "\n";
+            cout << "Sport Facilities" << endl;
         if (this->spa)
-            cout << "\nSpa";
+            cout << "Spa" << endl;
         if (this->salon)
-            cout << "\nBeauty Salon";
+            cout << "Beauty Salon" << endl;
     }
 
 /* Calculate expenses and print them. */
 void TravelDetails::compute_expenses()
 {
-    /*
-        gttl - total travel expenses
-        hr - days reserved (in hours, per location) ~ usage of hours is redundant
-        dcst - ticket price (per location)
-        cls - flight class base price
-        cabn - ? ~ never used
-        swpool, gm, spfts, slon, sp - base prices for expenses (per location)
-        ttr - ? ~ never used
-    */
-    long int gttl = 0, hr, dcst, cls, cabn, swpool = 5000, gm = 2000, spfts = 7500, slon = 6000, sp = 20000, ttr = 500;
-    switch (this->disembarking_point_id)  // assign prices for activities and ticket per destination
-    {
-    case 1:
-    case 2:
-    case 3:
-        hr = 30 * 24;
-        dcst = 250000;
-        break;
-    case 4:;
-    case 5:;
-    case 6:
-        hr = 7 * 24;
-        dcst = 75000;
-        break;
-    case 7:;
-    case 8:;
-    case 9:
-        hr = 24 * 24;
-        dcst = 130000;
-        break;
-    case 10:;
-    case 11:;
-    case 12:
-        hr = 15 * 24;
-        dcst = 100000;
-        break;
-    case 13:;
-    case 14:;
-    case 15:
-        hr = 12 * 24;
-        dcst = 120000;
-        break;
-    }
+    // pull currency type from settings
+    Settings settings;
+    CurrencyType coin_type = (CurrencyType)settings.default_currency;
+
+    // pull relevant pricesheet
+    PriceSheet prices;
+    Get_PriceSheet(this->disembarking_point_id, prices);
+
+    // calculate arival date
+    int return_day = this->day;
+    int return_month = this->month;
+    int return_year = this->year;
+    CalculateDate(return_day, return_month, return_year, prices.reservation_period);
+
+    // calculate tickets
+    int tickets_total = this->adults_count * prices.destination_ticket;
     
-    switch (this->flight_class)
+    // get class base price
+    int class_cost = this->flight_class;
+    switch (class_cost)
     {
     case 1:
-        cls = 1500;
+        class_cost = 90;
         break;
     case 2:
-        cls = 7500;
+        class_cost = 60;
         break;
     case 3:
-        cls = 5000;
+        class_cost = 20;
+        break;
     }
 
+    // print basic info
     system("cls");
     cout << ":::::::::::::::::::::: BILL ::::::::::::::::::::::::::" << endl;
     cout << "Boarding point: ";
@@ -173,92 +189,55 @@ void TravelDetails::compute_expenses()
     cout << "\nDestination: ";
     disembarking_name(this->disembarking_point_id);
     cout << "\nDate of Departure: ";
-    cout << day << "/" << month << "/" << year << endl;
-
-    // hr refers to the period of stay?
-    hr = hr / 24; // to calculate date of arrival (referring to return)
-    day = day + hr;
-    if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
-    {
-        if (day > 31)
-        {
-            month = month + 1;
-            day = day % 31;
-        }
-    }
-    if (month == 4 || month == 6 || month == 9 || month == 11)
-    {
-        if (day > 30)
-        {
-            month = month + 1;
-            day = day % 30;
-        }
-    }
-    if (month == 2)
-    {
-        if (day > 28)
-        {
-            month = month + 1;
-            day = day % 28;
-        }
-    }
-    if (month == 13)
-    {
-        month = 1;
-        year++;
-    }
-
+    cout << this->day << "/" << this->month << "/" << this->year << endl;
     cout << "Date of Arrival: ";
     cout << day << "/" << month << "/" << year << endl << endl;
-    cout << "Subject\t\tCost(for 1)\tNo of adults\tTotal";
-    cout << "\n\nTravel\t\t" << dcst << "\t\t   " << this->adults_count << "\t\t" << this->adults_count * dcst;
-    gttl += this->adults_count * dcst;  // cost of tickets for all members
-    cout << "\nClass\t\t" << cls << "\t\t   " << this->adults_count << "\t\t" << cls * this->adults_count;
-    gttl += cls * this->adults_count;  // cost of class status for all members
+
+    // print costs table
+    cout << "Subject\t\tCost(for 1)\tNo of adults\tTotal" << endl << endl;
+
+    cout << "Travel\t\t" << Currency(prices.destination_ticket, coin_type) << "\t\t   ";
+    cout << this->adults_count << "\t\t" << Currency(this->adults_count * prices.destination_ticket, coin_type) << endl;
+
+    cout << "Class\t\t" << class_cost << "\t\t   " << this->adults_count;
+    cout << "\t\t" << Currency(class_cost * this->adults_count, coin_type) << endl;
 
     // cost of extra expenses
     if (this->pool)
     {
-        cout << "\nSwimming Pool\t" << swpool << "\t\t   " << this->adults_count << "\t\t" << swpool * this->adults_count;
-        gttl += swpool * this->adults_count;
+        cout << "\nSwimming Pool\t" << prices.swimming_pool << "\t\t   ";
+        cout << this->adults_count << "\t\t" << prices.swimming_pool * this->adults_count << endl;
     }
     if (this->gym)
     {
-        cout << "\nGym\t\t" << gm << "\t\t   " << this->adults_count << "\t\t" << gm * this->adults_count;
-        gttl += gm * this->adults_count;
+        cout << "\nGym\t\t" << prices.gym << "\t\t   ";
+        cout << this->adults_count << "\t\t" << prices.gym * this->adults_count << endl;
     }
     if (this->sports)
     {
-        cout << "\nSports\t\t" << spfts << "\t\t   " << this->adults_count << "\t\t" << spfts * this->adults_count;
-        gttl += spfts * this->adults_count;
+        cout << "\nSports\t\t" << prices.other_sports << "\t\t   ";
+        cout << this->adults_count << "\t\t" << prices.other_sports * this->adults_count << endl;
     }
     if (this->salon)
     {
-        cout << "\nSalon\t\t" << slon << "\t\t   " << this->adults_count << "\t\t" << slon * this->adults_count;
-        gttl += slon * this->adults_count;
+        cout << "\nSalon\t\t" << prices.beauty_salon << "\t\t   ";
+        cout << this->adults_count << "\t\t" << prices.beauty_salon * this->adults_count << endl;
     }
     if (this->spa)
     {
-        cout << "\nSpa\t\t" << sp << "\t\t   " << this->adults_count << "\t\t" << sp * this->adults_count;
-        gttl += dcst * this->adults_count;
+        cout << "\nSpa\t\t" << prices.spa << "\t\t   ";
+        cout << this->adults_count << "\t\t" << prices.spa * this->adults_count << endl;
     }
 
-    // total cost printing ~ number formatting
-    cout << "\nGrand Total:Rs ";
-    if (gttl > 100000) // to provide comma's for grandtotal
-    {
-        cout << gttl / 100000 << ",";
-        gttl = gttl % 100000;
-    }
-    if (gttl > 1000)
-    {
-        cout << gttl / 1000 << ",";
-        gttl = gttl % 1000;
-    }
-    cout << gttl;
-    if (gttl < 10)
-        cout << "00";
-    cout << "\nAll Travellers below the age of 5 have not been charged" << endl;
+    // calculate total cost
+    Currency total(0, coin_type);
+    total += prices.destination_ticket + class_cost + prices.swimming_pool + prices.gym;
+    total += prices.other_sports + prices.beauty_salon + prices.spa;
+    total = total * this->adults_count;
+
+    // total cost printing
+    cout << "Total cost:  " << total << endl;
+    cout << "All Travellers below the age of 5 have not been charged." << endl;
 }
 
 /* Update adults count for corrent expense calculations. */
