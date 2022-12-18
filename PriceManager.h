@@ -6,6 +6,9 @@
 #define _filename "price_sheets.bin"
 
 
+/* Utility function for filling a pricesheet. */
+void Fill_PriceSheet(PriceSheet& out_sheet);
+
 /* Wrapper for adding a new pricesheet. */
 bool Add_PriceSheet(const PriceSheet& sheet);
 
