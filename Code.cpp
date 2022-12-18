@@ -9,33 +9,31 @@
 #include "PriceManager.h"
 
 using namespace std;
-long int code;
+long int latest_travel_code;
 Settings settings;
 
-void write_client_code()
+/* Load settings and set initial fields. */
+void Initialize()
 {
-    ofstream data_file("client_code.bin", ios::binary); // storing code value
-    if (!data_file)
-        cout << "Couldn't save updated client code to 'client_code.bin'." << endl;
-    else
-    {
-        data_file.write((char *)&code, sizeof(code));
-        data_file.close();
-    }
-}
+    system("cls");
 
-void read_client_code()
-{
-    ifstream data_file("client_code.bin", ios::binary); // storing code value
-    if (!data_file)
-        cout << "Couldn't read 'client_code.bin'." << endl;
-    else
+    // try to load settings from file
+    if (settings.LoadSettings() == false)
     {
-        data_file.read((char*)&code, sizeof(code));
-        //data_file.read((char*)&settings, sizeof(Settings));  // read settings, will be used in future update
-        settings.last_travel_code = code;
-        data_file.close();
+        cout << endl << "Trying to create file..." << endl;
+        // if failed, check if file exists, otherwise create it
+        ifstream check_handle(_settings_filename);
+        if (check_handle.good() == false)
+            FileManager<Settings>().CreateEmpty(_settings_filename);
+        check_handle.close();
+
+        settings.SaveSettings();
     }
+
+    latest_travel_code = settings.last_travel_code;
+
+    cout << "Initialization completed." << endl;
+    system("pause");
 }
 
 void family(int c, int &flag) // to display familyname+to check for record
@@ -197,7 +195,7 @@ void print_same_destination_implement(int tc) {
 
     //we check the disembarking point for each travel code (user) on the file and if it matches with the x (the user who we took his disembarking point) and print family names that fly there as well//
     cout << "The families that fly to the same destination are:" << endl;
-    for (int i = 1; i <= code; i++) {
+    for (int i = 1; i <= latest_travel_code; i++) {
         success_flag=FileManager<TravelDetails>().ReadFromFile("travel_details.bin", i, data);
 
         if (success_flag == false) {
@@ -213,8 +211,6 @@ void print_same_destination_implement(int tc) {
             cout<<p_data.family_name<<endl;
         }
     }
-
-
 }
 
 void settings_menu()
@@ -251,15 +247,12 @@ void settings_menu()
 
 int main()
 {
+    Initialize();
     PersonalDetails PD;
     TravelDetails TD;
 
-    system("cls");
-
-    read_client_code();
     int main_choice, opt1, opt2, opt3, opt4;
     int acceptcode, flag;
-    system("cls");
     do
     {
         system("cls");
@@ -269,10 +262,11 @@ int main()
         cout << "#######################################\n";
         cout << "#######################################\n";
 
-        cout << "\nPlease Register Choice!\n";
-        cout << "\n1.New User\n2.Existing User\n\n3.Settings\n4.Exit\n";
+        cout << "\nPlease select an option:\n";
+        cout << "\n1.New User\n2.Existing User\n\n3.Settings\n4.Exit" << endl;
         cin >> main_choice;
         cin.ignore();
+
         switch (main_choice)
         {
         case 1:
@@ -287,12 +281,12 @@ int main()
                 cin.ignore();  // in case a non numeric input is recieved
                 if (opt1 == 1)
                 {
-                    code++;
-                    PD.p_input(code);
-                    TD.t_input(code);
+                    latest_travel_code++;
+                    PD.p_input(latest_travel_code);
+                    TD.t_input(latest_travel_code);
 
                     /* update latest travel code */
-                    write_client_code();
+                    settings.SaveTravelCode();
 
                     /* save personal */
                     ofstream ofl("personal_details.bin", ios::binary | ios::app);
@@ -310,7 +304,7 @@ int main()
 
 
                     system("cls");
-                    cout << "\n\n\n\n!!!!!Your Details Have Been Registered.Please Make A Note Of This Code: " << code;
+                    cout << "\n\n\n\n!!!!!Your Details Have Been Registered.Please Make A Note Of This Code: " << latest_travel_code;
                     cout << "\n\n* For modifications,Please visit 'existing user' section in the main screen";
                     system("pause");
                 }
@@ -320,7 +314,7 @@ int main()
             system("cls");
             cout << "\n\n** EXISTING USER **\n\nPlease Enter The Travel Code That Was Given To You\n\n";
             cin >> acceptcode;
-            if (acceptcode > code)
+            if (acceptcode > latest_travel_code)
             {
                 cout << "\nNo such record has been created!";
                 system("pause");
