@@ -10,6 +10,7 @@ using namespace std;
 /* Function for date calculation. */
 void CalculateDate(int& day, int& month, int& year, int reserved)
 {
+    day += reserved;
     if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
     {
         if (day > 31)
@@ -151,6 +152,7 @@ void TravelDetails::compute_expenses()
 {
     // pull currency type from settings
     Settings settings;
+    settings.LoadSettings();
     CurrencyType coin_type = (CurrencyType)settings.default_currency;
 
     // pull relevant pricesheet
@@ -191,7 +193,7 @@ void TravelDetails::compute_expenses()
     cout << "\nDate of Departure: ";
     cout << this->day << "/" << this->month << "/" << this->year << endl;
     cout << "Date of Arrival: ";
-    cout << day << "/" << month << "/" << year << endl << endl;
+    cout << return_day << "/" << return_month << "/" << return_year << endl << endl;
 
     // print costs table
     cout << "Subject\t\tCost(for 1)\tNo of adults\tTotal" << endl << endl;
@@ -205,28 +207,28 @@ void TravelDetails::compute_expenses()
     // cost of extra expenses
     if (this->pool)
     {
-        cout << "\nSwimming Pool\t" << prices.swimming_pool << "\t\t   ";
-        cout << this->adults_count << "\t\t" << prices.swimming_pool * this->adults_count << endl;
+        cout << "\nSwimming Pool\t" << Currency(prices.swimming_pool, coin_type) << "\t\t   ";
+        cout << this->adults_count << "\t\t" << Currency(prices.swimming_pool * this->adults_count, coin_type) << endl;
     }
     if (this->gym)
     {
-        cout << "\nGym\t\t" << prices.gym << "\t\t   ";
-        cout << this->adults_count << "\t\t" << prices.gym * this->adults_count << endl;
+        cout << "\nGym\t\t" << Currency(prices.gym, coin_type) << "\t\t   ";
+        cout << this->adults_count << "\t\t" << Currency(prices.gym * this->adults_count, coin_type) << endl;
     }
     if (this->sports)
     {
-        cout << "\nSports\t\t" << prices.other_sports << "\t\t   ";
-        cout << this->adults_count << "\t\t" << prices.other_sports * this->adults_count << endl;
+        cout << "\nSports\t\t" << Currency(prices.other_sports, coin_type) << "\t\t   ";
+        cout << this->adults_count << "\t\t" << Currency(prices.other_sports * this->adults_count, coin_type) << endl;
     }
     if (this->salon)
     {
-        cout << "\nSalon\t\t" << prices.beauty_salon << "\t\t   ";
-        cout << this->adults_count << "\t\t" << prices.beauty_salon * this->adults_count << endl;
+        cout << "\nSalon\t\t" << Currency(prices.beauty_salon, coin_type) << "\t\t   ";
+        cout << this->adults_count << "\t\t" << Currency(prices.beauty_salon * this->adults_count, coin_type) << endl;
     }
     if (this->spa)
     {
-        cout << "\nSpa\t\t" << prices.spa << "\t\t   ";
-        cout << this->adults_count << "\t\t" << prices.spa * this->adults_count << endl;
+        cout << "\nSpa\t\t" << Currency(prices.spa, coin_type) << "\t\t   ";
+        cout << this->adults_count << "\t\t" << Currency(prices.spa * this->adults_count, coin_type) << endl;
     }
 
     // calculate total cost

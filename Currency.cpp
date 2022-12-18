@@ -69,7 +69,7 @@ void Currency::operator-=(float value)
 
 std::ostream& operator<<(std::ostream& os, const Currency& data)
 {
-    os << data.value;
+    os << data.ConvertTo(data.type);
 
     switch (data.type)
     {
