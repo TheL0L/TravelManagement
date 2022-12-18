@@ -436,7 +436,9 @@ int main()
                             ifl2.read((char *)&TD, sizeof(TD));
                         }
                         TD.update_adults(PD.adults_count());
+                        TD.AddDiscount(PD.DiscountAvaliablity());
                         TD.compute_expenses();
+
                         ifl2.close();
                     }
                     else if (opt2 == 5) 
