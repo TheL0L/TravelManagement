@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 
-enum CurrencyType {USD, Rupee, Shekel, RUB};
+enum CurrencyType {USD = 1, Rupee, Shekel, RUB};
 const float Rates[] = {1.0f, 82.86f, 3.44f, 64.65};
 
 /* Class for managing currency. */
@@ -24,6 +24,9 @@ public:
     float operator-(float operand);
     float operator*(float operand);
     float operator/(float operand);
+
+    void operator+=(float value);
+    void operator-=(float value);
 
     explicit operator float() const;
 

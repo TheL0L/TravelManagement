@@ -25,7 +25,7 @@ void Currency::ChangeType(CurrencyType type)
 
 float Currency::ConvertTo(CurrencyType type) const
 {
-    return this->value * Rates[type];
+    return this->value * Rates[type - 1];
 }
 
 float Currency::operator=(float value)
@@ -55,6 +55,16 @@ float Currency::operator/(float operand)
         return 1;
     
     return this->value / operand;
+}
+
+void Currency::operator+=(float value)
+{
+    this->value += value;
+}
+
+void Currency::operator-=(float value)
+{
+    this->value -= value;
 }
 
 std::ostream& operator<<(std::ostream& os, const Currency& data)
