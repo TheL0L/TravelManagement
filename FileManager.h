@@ -208,6 +208,52 @@ public:
         return true;
     }
 
-    
+    /* Reads chunk from file at given offset and stores in referenced buffer. */
+    bool ReadFromFile_at_offset(const char* filename, int offset, DataType& out_buffer)
+    {
+        // open file handler
+        ifstream reader(filename, ios::binary);
+        if (!reader)
+        {
+            cout << "Couldn't open file '" << filename << "' for reading." << endl;
+            return false;
+        }
+        else
+        {
+            // read chunk
+            reader.ignore(offset);
+            reader.read(reinterpret_cast<char*>(&out_buffer), sizeof(DataType));
+
+            // close handler
+            reader.close();
+        }
+
+        return true;
+    }
+
+    /* Inserts data to chunk at given offset. */
+    bool InsertToFile_at_offset(const char* filename, DataType& data, int offset)
+    {
+        // open file handler
+        fstream writer(filename, ios::binary | ios::in | ios::out);
+        if (!writer)
+        {
+            cout << "Couldn't open file '" << filename << "' for writing." << endl;
+            return false;
+        }
+        else
+        {
+            // overwrite chunk
+            writer.seekp(offset);
+            writer.write(reinterpret_cast<char*>(&data), sizeof(DataType));
+
+            // close handler
+            writer.close();
+        }
+
+        return true;
+    }
+
+
 };
 
