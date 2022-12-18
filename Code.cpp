@@ -9,7 +9,6 @@
 #include "PriceManager.h"
 
 using namespace std;
-long int latest_travel_code;
 Settings settings;
 
 /* Load settings and set initial fields. */
@@ -29,8 +28,6 @@ void Initialize()
 
         settings.SaveSettings();
     }
-
-    latest_travel_code = settings.last_travel_code;
 
     cout << "Initialization completed." << endl;
     system("pause");
@@ -195,7 +192,7 @@ void print_same_destination_implement(int tc) {
 
     //we check the disembarking point for each travel code (user) on the file and if it matches with the x (the user who we took his disembarking point) and print family names that fly there as well//
     cout << "The families that fly to the same destination are:" << endl;
-    for (int i = 1; i <= latest_travel_code; i++) {
+    for (int i = 1; i <= settings.last_travel_code; i++) {
         success_flag=FileManager<TravelDetails>().ReadFromFile("travel_details.bin", i, data);
 
         if (success_flag == false) {
@@ -240,6 +237,7 @@ void settings_menu()
             Edit_PriceSheet(sheet);
             break;
         }
+        settings.SaveSettings();
         system("pause");
     } while (choice != 5);
     
@@ -281,9 +279,9 @@ int main()
                 cin.ignore();  // in case a non numeric input is recieved
                 if (opt1 == 1)
                 {
-                    latest_travel_code++;
-                    PD.p_input(latest_travel_code);
-                    TD.t_input(latest_travel_code);
+                    settings.last_travel_code++;
+                    PD.p_input(settings.last_travel_code);
+                    TD.t_input(settings.last_travel_code);
 
                     /* update latest travel code */
                     settings.SaveTravelCode();
@@ -304,7 +302,7 @@ int main()
 
 
                     system("cls");
-                    cout << "\n\n\n\n!!!!!Your Details Have Been Registered.Please Make A Note Of This Code: " << latest_travel_code;
+                    cout << "\n\n\n\n!!!!!Your Details Have Been Registered.Please Make A Note Of This Code: " << settings.last_travel_code;
                     cout << "\n\n* For modifications,Please visit 'existing user' section in the main screen";
                     system("pause");
                 }
@@ -314,7 +312,7 @@ int main()
             system("cls");
             cout << "\n\n** EXISTING USER **\n\nPlease Enter The Travel Code That Was Given To You\n\n";
             cin >> acceptcode;
-            if (acceptcode > latest_travel_code)
+            if (acceptcode > settings.last_travel_code)
             {
                 cout << "\nNo such record has been created!";
                 system("pause");
@@ -458,5 +456,6 @@ int main()
         }
     } while (main_choice != 4);
 
+    settings.SaveSettings();
     return 0;
 }
