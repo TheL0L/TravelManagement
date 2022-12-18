@@ -254,6 +254,27 @@ public:
         return true;
     }
 
+    bool CreateEmpty(const char* filename)
+    {
+        // open file handler
+        ofstream writer(filename);
+        if (!writer)
+        {
+            cout << "Couldn't create file '" << filename << "'." << endl;
+            return false;
+        }
+        else
+        {
+            // write zeros at size of DataType
+            char* zeros = new char[sizeof(DataType)]();
+            writer.write(zeros, sizeof(char));
+            delete[] zeros;
 
+            // close handler
+            writer.close();
+        }
+
+        return true;
+    }
 };
 
