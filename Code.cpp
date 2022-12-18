@@ -1,18 +1,16 @@
 #include <iostream>
-#include <conio.h>
-#include <stdio.h>
-#include <process.h>
 #include <fstream>
-#include <cctype>
-#include <stdio.h>
-#include <stdlib.h>
-#include <iomanip>
-using namespace std;
-long int code;
 
+#include "Settings.h"
 #include "PersonalDetails.h"
 #include "TravelDetails.h"
 #include "FileManager.h"
+#include "Currency.h"
+#include "PriceManager.h"
+
+using namespace std;
+long int code;
+Settings settings;
 
 void write_client_code()
 {
@@ -33,7 +31,9 @@ void read_client_code()
         cout << "Couldn't read 'client_code.bin'." << endl;
     else
     {
-        data_file.read((char *)&code, sizeof(code));
+        data_file.read((char*)&code, sizeof(code));
+        //data_file.read((char*)&settings, sizeof(Settings));  // read settings, will be used in future update
+        settings.last_travel_code = code;
         data_file.close();
     }
 }
@@ -217,6 +217,38 @@ void print_same_destination_implement(int tc) {
 
 }
 
+void settings_menu()
+{
+    PriceSheet sheet;
+    int choice;
+    do
+    {
+        system("cls");
+        cout << "#############   SETTINGS   ############" << endl;
+        cout << "1. Display Currency" << endl;
+        cout << "2. Edit Existing PriceSheets" << endl;
+        cout << endl;  // "3. Add New Destinations" << endl;  // an idea
+        cout << endl;  // "4. Remove Destinations" << endl;  // an idea
+        cout << "5. Back" << endl;
+
+        cin >> choice;
+        cin.ignore();  // in case a non numeric input is recieved
+
+        switch (choice)
+        {
+        case 1:
+            settings.default_currency = PickAvailableCurrency();
+            break;
+        case 2:
+            Fill_PriceSheet(sheet);
+            Edit_PriceSheet(sheet);
+            break;
+        }
+        system("pause");
+    } while (choice != 5);
+    
+}
+
 int main()
 {
     PersonalDetails PD;
@@ -225,7 +257,7 @@ int main()
     system("cls");
 
     read_client_code();
-    int opt, opt1, opt2, opt3, opt4;
+    int main_choice, opt1, opt2, opt3, opt4;
     int acceptcode, flag;
     system("cls");
     do
@@ -238,9 +270,10 @@ int main()
         cout << "#######################################\n";
 
         cout << "\nPlease Register Choice!\n";
-        cout << "\n1.New User\n2.Existing User\n3.Exit\n";
-        cin >> opt;
-        switch (opt)
+        cout << "\n1.New User\n2.Existing User\n\n3.Settings\n4.Exit\n";
+        cin >> main_choice;
+        cin.ignore();
+        switch (main_choice)
         {
         case 1:
             do
@@ -422,14 +455,14 @@ int main()
                         break;
                     }
                     system("pause");
-                } while (opt != 3);
+                } while (main_choice != 3);
             }
             break;
         case 3:
-            write_client_code();
-            exit(0);
+            settings_menu();
             break;
         }
-    } while (1); // infinite loop till exit selected
+    } while (main_choice != 4);
+
     return 0;
 }
