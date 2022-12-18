@@ -5,7 +5,8 @@ struct PriceSheet
 {
     /* prices are based on destination, each dest. has unique id. */
     int ID;
-    int destination_ticket = 0, flight_class = 0, per_reserved_day = 0;
+    int destination_ticket = 0;
+    int reservation_period = 0;
     int swimming_pool = 0, gym = 0, other_sports = 0;
     int spa = 0, beauty_salon = 0;
 };
