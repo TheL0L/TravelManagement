@@ -55,7 +55,7 @@ public:
     }
 
     /* Appends data to end of file. */
-    bool AppendToFile(const char* filename, const DataType& data)
+    bool AppendToFile(const char* filename, DataType& data)
     {
         // verify that chunk isn't present in file
         int offset = FindOffset(filename, data.ID, false);
@@ -76,7 +76,7 @@ public:
         else
         {
             // append chunk
-            writer.write(reinterpret_cast<const char*>(&data), sizeof(DataType));
+            writer.write(reinterpret_cast<char*>(&data), sizeof(DataType));
 
             // close handler
             writer.close();

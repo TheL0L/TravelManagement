@@ -34,7 +34,7 @@ void Fill_PriceSheet(PriceSheet& out_sheet)
 }
 
 /* Wrapper for adding a new pricesheet. */
-bool Add_PriceSheet(const PriceSheet& sheet)
+bool Add_PriceSheet(PriceSheet& sheet)
 {
     return FileManager<PriceSheet>().AppendToFile(_filename, sheet);
 }
@@ -46,7 +46,7 @@ bool Edit_PriceSheet(PriceSheet& sheet)
 }
 
 /* Wrapper for removing an existing pricesheet. */
-bool Remove_PriceSheet(const PriceSheet& sheet)
+bool Remove_PriceSheet(PriceSheet& sheet)
 {
     return FileManager<PriceSheet>().DeleteFromFile(_filename, sheet.ID);
 }
