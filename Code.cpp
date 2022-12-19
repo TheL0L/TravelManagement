@@ -42,29 +42,33 @@ int* Statistics()// get the amounts of travelers to the same destination
     FileManager<TravelDetails> fm;
     int last_code = settings.last_travel_code;
     int stats[15] = { 0 };
-    int counter = 0;
 
     for (int i = 1; i <= last_code; i++)
     {
         fm.ReadFromFile(_travel_details_filename, i, TD);
-        stats[TD.disembarking_point_id]++;
+        stats[TD.disembarking_point_id - 1]++;
     }
     return stats;
 }
 
 void printStats(int* stats)// print the hotest and least hotest locations
 {
-    int bigger = stats[0], smaller = stats[0];
-    for (int i = 0; i <= 15; i++)
+    int maxIndex = 0, minIndex = 0;
+    for (int i = 1; i < 15; i++)
     {
-        if (stats[i] > bigger)
-            bigger = i;
-        if (stats[i] < smaller)
-            smaller = i;
+        if (stats[i] > stats[maxIndex])
+            maxIndex = i;
+        if (stats[i] < stats[minIndex])
+            minIndex = i;
     }
-    cout << "The hotest destination today is: "; disembarking_name(bigger);
+    for (int i = 0; i < 15; i++)
+    {
+        disembarking_name(i + 1);
+        cout << " " << stats[i] << endl;
+    }
+    cout << "The hotest destination today is: "; disembarking_name(maxIndex + 1);
     cout << endl;
-    cout << "The least hotest destination today is: "; disembarking_name(smaller);
+    cout << "The least hotest destination today is: "; disembarking_name(minIndex + 1);
     cout << endl;
 }
 
