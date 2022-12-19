@@ -147,7 +147,7 @@ void TravelDetails::t_output()
     }
 
 /* Calculate expenses and print them. */
-void TravelDetails::compute_expenses()
+void TravelDetails::compute_expenses(int dis)
 {
     // pull currency type from settings
     Settings settings;
@@ -238,7 +238,7 @@ void TravelDetails::compute_expenses()
     // total cost printing
     cout << "Total cost:  " << total << endl;
 
-    if (this->dis > 0)
+    if (dis > 0)
     {
         cout << "\t\t\tEach client is special to us but today you're even more than ever!" << endl;
         cout << "\t\t\tYou will recieve an aditional discount: " << dis << "% off! Thank you for choosing our company!" << endl;
@@ -330,10 +330,4 @@ void disembarking_name(int id)
         cout << "Willington";
         break;
     }
-}
-
-/* Add discount based on personal ditails*/
-void TravelDetails::AddDiscount(int dis)
-{
-    this->dis = dis;
 }

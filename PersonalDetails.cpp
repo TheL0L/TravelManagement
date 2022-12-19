@@ -77,10 +77,10 @@ int PersonalDetails::DiscountAvaliablity()
     bool flag = false;
 
     struct tm date;
-    time_t current = time(0);
-    localtime_s(&date, &current);
-    int d = date.tm_mday;
-    int m = date.tm_mon + 1;
+    time_t current_time = time(0);
+    localtime_s(&date, &current_time);
+    int day = date.tm_mday;
+    int month = date.tm_mon + 1;
 
     //Big families will recieve a 1% discount per member up to 5%
     if (this->members_count >= 3 && this->members_count <= 5)
@@ -90,7 +90,6 @@ int PersonalDetails::DiscountAvaliablity()
         discount += 5;
 
     //Elderly discount - a family member older than 50 will recieve additional 1% discount
-    flag = false;
     for (int i = 0; i < sizeof(this->ages) / sizeof(this->ages[0]) && !flag; i++)
     {
         if (ages[i] >= 50)
@@ -100,7 +99,7 @@ int PersonalDetails::DiscountAvaliablity()
         }
     }
 
-    //Goup of more than 2 members will recieve a discount based on the creterias:
+    //Group of more than 2 members will recieve a discount based on the creterias:
     if (members_count > 1)
     {
 
@@ -108,7 +107,7 @@ int PersonalDetails::DiscountAvaliablity()
         flag = false;
         for (int i = 0; i < sizeof(this->ages) / sizeof(this->ages[0]) && !flag; i++)
         {
-            if (d == this->bday[i] && m == this->bmonth[i])
+            if (day == this->bday[i] && month == this->bmonth[i])
             {
                 discount += 2;
                 flag = true;
@@ -117,7 +116,7 @@ int PersonalDetails::DiscountAvaliablity()
 
         //Women's day discount - during 8 of March a female family member will recieve 1% discount
         flag = false;
-        if (d == 8 && m == 3)
+        if (day == 8 && month == 3)
             for (int i = 0; i < sizeof(this->genders) / sizeof(this->genders[0]) && !flag; i++)
             {
                 if (this->genders[i] == 'F')
