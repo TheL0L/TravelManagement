@@ -75,8 +75,12 @@ int PersonalDetails::DiscountAvaliablity()
 {
     int discount = 0;
     bool flag = false;
-    std::time_t date = std::time(0);
-    std::tm* current = std::localtime(&date);
+
+    struct tm date;
+    time_t current = time(0);
+    localtime_s(&date, &current);
+    int d = date.tm_mday;
+    int m = date.tm_mon + 1;
 
     //Big families will recieve a 1% discount per member up to 5%
     if (this->members_count >= 3 && this->members_count <= 5)
@@ -104,7 +108,7 @@ int PersonalDetails::DiscountAvaliablity()
         flag = false;
         for (int i = 0; i < sizeof(this->ages) / sizeof(this->ages[0]) && !flag; i++)
         {
-            if ((current->tm_mday) == this->bday[i] && current->tm_mday == this->bmonth[i])
+            if (d == this->bday[i] && m == this->bmonth[i])
             {
                 discount += 2;
                 flag = true;
@@ -113,7 +117,7 @@ int PersonalDetails::DiscountAvaliablity()
 
         //Women's day discount - during 8 of March a female family member will recieve 1% discount
         flag = false;
-        if ((current->tm_mday + 1) == 3 && current->tm_mday == 8)
+        if (d == 8 && m == 3)
             for (int i = 0; i < sizeof(this->genders) / sizeof(this->genders[0]) && !flag; i++)
             {
                 if (this->genders[i] == 'F')
