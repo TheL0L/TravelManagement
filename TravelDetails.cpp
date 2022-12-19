@@ -201,7 +201,7 @@ void TravelDetails::compute_expenses()
     cout << "Travel\t\t" << Currency(prices.destination_ticket, coin_type) << "\t\t   ";
     cout << this->adults_count << "\t\t" << Currency(this->adults_count * prices.destination_ticket, coin_type) << endl;
 
-    cout << "Class\t\t" << class_cost << "\t\t   " << this->adults_count;
+    cout << "Class\t\t" << Currency(class_cost, coin_type) << "\t\t   " << this->adults_count;
     cout << "\t\t" << Currency(class_cost * this->adults_count, coin_type) << endl;
 
     // cost of extra expenses
