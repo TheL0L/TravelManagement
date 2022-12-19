@@ -8,6 +8,9 @@
 #include "Currency.h"
 #include "PriceManager.h"
 
+#define _personal_details_filename "personal_details.bin"
+#define _travel_details_filename "travel_details.bin"
+
 using namespace std;
 Settings settings;
 
@@ -31,150 +34,6 @@ void Initialize()
 
     cout << "Initialization completed." << endl;
     system("pause");
-}
-
-void family(int c, int &flag) // to display familyname+to check for record
-{
-    PersonalDetails PD;
-
-    flag = 0;
-    system("cls");
-    ifstream ifl("personal_details.bin", ios::binary);
-    if (!ifl)
-        cout << "\nError";
-    ifl.read((char *)&PD, sizeof(PD));
-    do
-    {
-        if (PD.get_travel_code() == c)
-        {
-            flag = 1;
-            break;
-        }
-        ifl.read((char *)&PD, sizeof(PD));
-    } while (!ifl.eof());
-    if (flag == 1)
-    {
-        cout << PD.family_name << "'s FAMILY DATABASE **";
-    }
-    else
-    {
-        cout << "\nError in locating record!!";
-    }
-    ifl.close();
-}
-
-void editp(int c) // to edit persdetails
-{
-    PersonalDetails PD;
-
-    ofstream ofl2("temp1.txt", ios::binary);
-    if (!ofl2)
-        cout << "Error While Opening File";
-    ifstream ifl4("personal_details.bin", ios::binary);
-    if (!ifl4)
-        cout << "Error While Opening File";
-    ifl4.read((char *)&PD, sizeof(PD));
-    while (!ifl4.eof())
-    {
-        if (PD.get_travel_code() == c)
-        {
-            system("cls");
-            cout << "Please Enter the New details of the record" << endl;
-            PD.p_input(c);
-            ofl2.write((char *)&PD, sizeof(PD));
-            cout << "\nModification Succesful!!!";
-            ifl4.read((char *)&PD, sizeof(PD));
-        }
-        else
-        {
-            ofl2.write((char *)&PD, sizeof(PD));
-            ifl4.read((char *)&PD, sizeof(PD));
-        }
-    }
-    remove("personal_details.bin");
-    rename("temp1.txt", "personal_details.bin");
-    ifl4.close();
-    ofl2.close();
-}
-
-void editt(int c) // to edit travdetails
-{
-    TravelDetails TD;
-
-    ofstream ofl2("temp1.txt", ios::binary);
-    if (!ofl2)
-        cout << "Error While Opening File";
-    ifstream ifl4("travel_details.bin", ios::binary);
-    if (!ifl4)
-        cout << "Error While Opening File";
-    ifl4.read((char *)&TD, sizeof(TD));
-    while (!ifl4.eof())
-    {
-        if (TD.get_travel_code() == c)
-        {
-            system("cls");
-            cout << "Please Enter the New details of the record" << endl;
-            TD.t_input(c);
-            ofl2.write((char *)&TD, sizeof(TD));
-            cout << "\nModification Succesful!!!";
-            ifl4.read((char *)&TD, sizeof(TD));
-        }
-        else
-        {
-            ofl2.write((char *)&TD, sizeof(TD));
-            ifl4.read((char *)&TD, sizeof(TD));
-        }
-    }
-    remove("travel_details.bin");
-    rename("temp1.txt", "travel_details.bin");
-    ifl4.close();
-    ofl2.close();
-}
-
-void deletion(int c) // common delete func()
-{
-    PersonalDetails PD;
-    TravelDetails TD;
-
-    ofstream ofl2("temp1.txt", ios::binary);
-    if (!ofl2)
-        cout << "Error While Opening File";
-    ifstream ifl4("personal_details.bin", ios::binary);
-    if (!ifl4)
-        cout << "Error While Opening File";
-    ifl4.read((char *)&PD, sizeof(PD));
-    while (!ifl4.eof())
-    {
-        if (PD.get_travel_code() != c)
-        {
-            ofl2.write((char *)&PD, sizeof(PD));
-        }
-        ifl4.read((char *)&PD, sizeof(PD));
-    }
-    remove("personal_details.bin");
-    rename("temp1.txt", "personal_details.bin");
-    ofl2.close();
-    ifl4.close();
-    ofstream ofl3("temp2.txt", ios::binary);
-    if (!ofl3)
-        cout << "\nError While Opening File";
-    ifstream ifl5("travel_details.bin", ios::binary);
-    if (!ifl5)
-        cout << "\nError While Opening File";
-    ifl5.read((char *)&TD, sizeof(TD));
-    while (!ifl5.eof())
-    {
-        if (TD.get_travel_code() != c)
-        {
-            ofl3.write((char *)&TD, sizeof(TD));
-        }
-        ifl5.read((char *)&TD, sizeof(TD));
-    }
-    ofl3.close();
-    ifl5.close();
-    remove("travel_details.bin");
-    rename("temp1.txt", "travel_details.bin");
-    cout << "\n\nDeletion Completed!";
 }
 
 void print_same_destination_implement(int tc) {
@@ -227,6 +86,7 @@ void settings_menu()
         cin >> choice;
         cin.ignore();  // in case a non numeric input is recieved
 
+        system("cls");
         switch (choice)
         {
         case 1:
@@ -250,7 +110,8 @@ int main()
     TravelDetails TD;
 
     int main_choice, opt1, opt2, opt3, opt4;
-    int acceptcode, flag;
+    int acceptcode;
+    bool success_flag;
     do
     {
         system("cls");
@@ -318,137 +179,104 @@ int main()
                 system("pause");
                 break;
             }
-            family(acceptcode, flag);
-            cout << endl << endl << "\t\t\t\tCode no:" << acceptcode;
-            if (flag == 1)
+
+            // load personal details from file and print family name:  _name_'s FAMILY
+            success_flag = FileManager<PersonalDetails>().ReadFromFile(_personal_details_filename, acceptcode, PD);
+            if (success_flag == false)
             {
-                do
+                cout << "Couldn't find requested family record." << endl;
+                system("pause");
+                break;
+            }
+            cout << PD.family_name << "'s FAMILY DATABASE **" << endl;
+            cout << "\t\t\t\tCode no:" << acceptcode << endl;
+            system("pause");
+            
+            do
+            {
+                system("cls");
+                cout << "\n\n@@@@@@@@@Information Centre@@@@@@@@@";
+                cout << "\n~~~~~~~";
+                cout << "\n\nPlease select the type of operation that you would like to perform:";
+                cout << "\n1.View Personal Details\n2.View Travel Details\n3.Edit Details" << endl;
+                cout << "4.Compute Bill\n\n5.Print all families with similar destination\n\n6.Back" << endl;
+                cin >> opt2;
+                if (opt2 == 1)
                 {
-                    system("cls");
-                    cout << "\n\n@@@@@@@@@Information Centre@@@@@@@@@";
-                    cout << "\n~~~~~~~";
-                    cout << "\n\nPlease select the type of operation that you would like to perform:";
-                    cout << "\n1.View Personal Details\n2.View Travel Details\n3.Edit Details" << endl;
-                    cout << "4.Compute Bill\n\n5.Print all families with similar destination\n\n6.Back" << endl;
-                    cin >> opt2;
-                    if (opt2 == 1)
-                    {
-                        ifstream ifl("personal_details.bin", ios::binary);
-                        if (!ifl)
-                            cout << "\nError";
-                        ifl.read((char *)&PD, sizeof(PD));
-                        while (!ifl.eof())
-                        {
-                            if (PD.get_travel_code() == acceptcode)
-                            {
-                                break;
-                            }
-                            ifl.read((char *)&PD, sizeof(PD));
-                        }
-                        PD.p_output();
-                        ifl.close();
-                    }
-                    else if (opt2 == 2)
-                    {
-                        ifstream ifl1("travel_details.bin", ios::binary);
-                        if (!ifl1)
-                            cout << "\nError";
-                        ifl1.read((char *)&TD, sizeof(TD));
-                        while (!ifl1.eof())
-                        {
-                            if (TD.get_travel_code() == acceptcode)
-                            {
-                                break;
-                            }
-                            ifl1.read((char *)&TD, sizeof(TD));
-                        }
-                        TD.t_output();
-                        ifl1.close();
-                    }
-                    else if (opt2 == 3)
-                    {
-                        do
-                        {
-                            system("cls");
-                            cout << "\n\n\n\t¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬ Edit Details ¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬";
-                            cout << "\n\n\t\tPlease select from among the editing options:\n\n";
-                            cout << "\t\t\t\t1.Modify\n\n\t\t\t\t2.Delete\n\n\t\t\t\t3.Back\n\n\t\t\t\t ";
-                            cin >> opt3;
-                            switch (opt3)
-                            {
-                            case 1:
-                                do
-                                {
-                                    system("cls");
-                                    cout << "\n\n\t\t Modificaton \n";
-                                    cout << "\t\t               ~~~~~";
-                                    cout << "\n\n\tChoose The Type Of Details You Want To Modify:\n\n\t\t\t1.Personal Details\n\n\t\t\t2.Travel Details\n\n\t\t\t3.Back\n\n\t\t\t ";
-                                    cin >> opt4;
-                                    switch (opt4)
-                                    {
-                                    case 1:
-                                        editp(acceptcode);
-                                        break;
-                                    case 2:
-                                        editt(acceptcode);
-                                        break;
-                                    case 3:
-                                        break;
-                                    }
-                                } while (opt4 != 3);
-                                break;
-                            case 2:
-                                deletion(acceptcode);
-                                opt3 = 3;
-                                opt2 = 5;
-                                break;
-                            case 3:
-                                break;
-                            }
-                        } while (opt3 != 3);
-                    }
-                    else if (opt2 == 4)
-                    {
-                        ifstream ifl3("personal_details.bin", ios::binary);
-                        if (!ifl3)
-                            cout << "\nError";
-                        ifl3.read((char *)&PD, sizeof(PD));
-                        while (!ifl3.eof())
-                        {
-                            if (PD.get_travel_code() == acceptcode)
-                            {
-                                break;
-                            }
-                            ifl3.read((char *)&PD, sizeof(PD));
-                        }
-                        ifstream ifl2("travel_details.bin", ios::binary);
-                        if (!ifl2)
-                            cout << "\nError";
-                        ifl2.read((char *)&TD, sizeof(TD));
-                        while (!ifl2.eof())
-                        {
-                            if (TD.get_travel_code() == acceptcode)
-                            {
-                                break;
-                            }
-                            ifl2.read((char *)&TD, sizeof(TD));
-                        }
-                        TD.update_adults(PD.adults_count());
-                        TD.compute_expenses();
-                        ifl2.close();
-                    }
-                    else if (opt2 == 5) 
+                    // print personal details
+                    FileManager<PersonalDetails>().ReadFromFile(_personal_details_filename, acceptcode, PD);
+                    PD.p_output();
+                }
+                else if (opt2 == 2)
+                {
+                    // print travel details
+                    FileManager<TravelDetails>().ReadFromFile(_travel_details_filename, acceptcode, TD);
+                    TD.t_output();
+                }
+                else if (opt2 == 3)
+                {
+                    do
                     {
                         system("cls");
-                        print_same_destination_implement(acceptcode);
-                    }
-                    else if (opt2 == 6)
-                    {
-                        break;
-                    }
-                    system("pause");
-                } while (main_choice != 3);
-            }
+                        cout << "\n\n\n\t¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬ Edit Details ¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬";
+                        cout << "\n\n\t\tPlease select from among the editing options:\n\n";
+                        cout << "\t\t\t\t1.Modify\n\n\t\t\t\t2.Delete\n\n\t\t\t\t3.Back\n\n\t\t\t\t ";
+                        cin >> opt3;
+                        switch (opt3)
+                        {
+                        case 1:
+                            do
+                            {
+                                system("cls");
+                                cout << "\n\n\t\t Modificaton \n";
+                                cout << "\t\t               ~~~~~";
+                                cout << "\n\n\tChoose The Type Of Details You Want To Modify:\n\n\t\t\t1.Personal Details\n\n\t\t\t2.Travel Details\n\n\t\t\t3.Back\n\n\t\t\t ";
+                                cin >> opt4;
+                                switch (opt4)
+                                {
+                                case 1:
+                                    // edit personal details
+                                    PD.p_input(acceptcode);
+                                    FileManager<PersonalDetails>().InsertToFile(_personal_details_filename, PD, acceptcode);
+                                    break;
+                                case 2:
+                                    // edit travel details
+                                    TD.t_input(acceptcode);
+                                    FileManager<TravelDetails>().InsertToFile(_travel_details_filename, TD, acceptcode);
+                                    break;
+                                }
+                            } while (opt4 != 3);
+                            break;
+                        case 2:
+                            // remove record
+                            FileManager<PersonalDetails>().DeleteFromFile(_personal_details_filename, acceptcode);
+                            FileManager<TravelDetails>().DeleteFromFile(_travel_details_filename, acceptcode);
+                            opt3 = 3;
+                            opt2 = 5;
+                            break;
+                        }
+                    } while (opt3 != 3);
+                }
+                else if (opt2 == 4)
+                {
+                    // print expenses bill
+                    FileManager<PersonalDetails>().ReadFromFile(_personal_details_filename, acceptcode, PD);
+                    FileManager<TravelDetails>().ReadFromFile(_travel_details_filename, acceptcode, TD);
+                    TD.update_adults(PD.adults_count());
+                    TD.compute_expenses();
+                }
+                else if (opt2 == 5) 
+                {
+                    system("cls");
+                    print_same_destination_implement(acceptcode);
+                }
+                else if (opt2 == 6)
+                {
+                    break;
+                }
+                system("pause");
+            } while (main_choice != 3);
+            
             break;
         case 3:
             settings_menu();
