@@ -36,6 +36,38 @@ void Initialize()
     system("pause");
 }
 
+int* Statistics()// get the amounts of travelers to the same destination
+{
+    TravelDetails TD;
+    FileManager<TravelDetails> fm;
+    int last_code = settings.last_travel_code;
+    int stats[15] = { 0 };
+    int counter = 0;
+
+    for (int i = 1; i <= last_code; i++)
+    {
+        fm.ReadFromFile(_travel_details_filename, i, TD);
+        stats[TD.disembarking_point_id]++;
+    }
+    return stats;
+}
+
+void printStats(int* stats)// print the hotest and least hotest locations
+{
+    int bigger = stats[0], smaller = stats[0];
+    for (int i = 0; i <= 15; i++)
+    {
+        if (stats[i] > bigger)
+            bigger = i;
+        if (stats[i] < smaller)
+            smaller = i;
+    }
+    cout << "The hotest destination today is: "; disembarking_name(bigger);
+    cout << endl;
+    cout << "The least hotest destination today is: "; disembarking_name(smaller);
+    cout << endl;
+}
+
 void print_same_destination_implement(int tc) {
     bool success_flag;
     //we get a travel code and read from the file the data of the user that corresponds with the travel code//
@@ -109,7 +141,7 @@ int main()
     PersonalDetails PD;
     TravelDetails TD;
 
-    int main_choice, opt1, opt2, opt3, opt4;
+    int main_choice, opt1, opt2, opt3, opt4, *stats;
     int acceptcode;
     bool success_flag;
     do
@@ -122,7 +154,7 @@ int main()
         cout << "#######################################\n";
 
         cout << "\nPlease select an option:\n";
-        cout << "\n1.New User\n2.Existing User\n\n3.Settings\n4.Exit" << endl;
+        cout << "\n1.New User\n2.Existing User\n\n3.Statistics\n4.Settings\n5.Exit" << endl;
         cin >> main_choice;
         cin.ignore();
 
@@ -279,10 +311,16 @@ int main()
             
             break;
         case 3:
+            system("cls");
+			stats = Statistics();
+			printStats(stats);
+			system("pause");
+        break;
+        case 4:
             settings_menu();
             break;
         }
-    } while (main_choice != 4);
+    } while (main_choice != 5);
 
     settings.SaveSettings();
     return 0;
