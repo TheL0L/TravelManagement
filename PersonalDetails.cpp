@@ -30,7 +30,7 @@ void PersonalDetails::p_input(int travel_code)
             cout << "Age: ";
             cin >> this->ages[i];
             cout << "Birthday (day and month): ";
-            cin >> this->bday[i] >> bmonth[i];
+            cin >> this->bday[i] >> this->bmonth[i];
             cout << "Sex (M/F): ";
             cin >> this->genders[i];
             cout << "Passport Number: ";
@@ -90,7 +90,7 @@ int PersonalDetails::DiscountAvaliablity()
         discount += 5;
 
     //Elderly discount - a family member older than 50 will recieve additional 1% discount
-    for (int i = 0; i < sizeof(this->ages) / sizeof(this->ages[0]) && !flag; i++)
+    for (int i = 0; i < members_count && !flag; i++)
     {
         if (ages[i] >= 50)
         {
@@ -105,7 +105,7 @@ int PersonalDetails::DiscountAvaliablity()
 
         //Birthday - family member which celebrates birthday will recieve 2% discount
         flag = false;
-        for (int i = 0; i < sizeof(this->ages) / sizeof(this->ages[0]) && !flag; i++)
+        for (int i = 0; i < members_count && !flag; i++)
         {
             if (day == this->bday[i] && month == this->bmonth[i])
             {
@@ -117,7 +117,7 @@ int PersonalDetails::DiscountAvaliablity()
         //Women's day discount - during 8 of March a female family member will recieve 1% discount
         flag = false;
         if (day == 8 && month == 3)
-            for (int i = 0; i < sizeof(this->genders) / sizeof(this->genders[0]) && !flag; i++)
+            for (int i = 0; i < members_count && !flag; i++)
             {
                 if (this->genders[i] == 'F')
                 {
