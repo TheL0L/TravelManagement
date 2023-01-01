@@ -23,12 +23,13 @@ methods:
 */
 struct PersonalDetails // class for collecting the personal details
 {
-    int ID, ages[20], children_count, members_count;
+    int ID, ages[20], bday[20], bmonth[20], children_count, members_count;
     char names[20][20], address[50], phone_number[15], genders[20], passports[20][9], family_name[30];
 
     void p_input(int travel_code);
     void p_output();
     int adults_count();
     int get_travel_code();
+    int DiscountAvaliablity();
 };
 

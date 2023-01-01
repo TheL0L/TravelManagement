@@ -3,7 +3,6 @@
 #include "InputHandler.h"
 using namespace std;
 
-
 /* Prompt to fill PersonalDetails from inputs. */
 void PersonalDetails::p_input(int travel_code)
 {
@@ -30,6 +29,8 @@ void PersonalDetails::p_input(int travel_code)
             StringInput(this->names[i], 20);
             cout << "Age: ";
             cin >> this->ages[i];
+            cout << "Birthday (day and month): ";
+            cin >> this->bday[i] >> this->bmonth[i];
             cout << "Sex (M/F): ";
             cin >> this->genders[i];
             cout << "Passport Number: ";
@@ -67,4 +68,63 @@ int PersonalDetails::adults_count()
 int PersonalDetails::get_travel_code()
 {
     return this->ID;
+}
+
+/* Calculates a discount a family may get in certein creterias */
+int PersonalDetails::DiscountAvaliablity()
+{
+    int discount = 0;
+    bool flag = false;
+
+    struct tm date;
+    time_t current_time = time(0);
+    localtime_s(&date, &current_time);
+    int day = date.tm_mday;
+    int month = date.tm_mon + 1;
+
+    //Big families will recieve a 1% discount per member up to 5%
+    if (this->members_count >= 3 && this->members_count <= 5)
+        discount += members_count;
+
+    else if (this->members_count > 5)
+        discount += 5;
+
+    //Elderly discount - a family member older than 50 will recieve additional 1% discount
+    for (int i = 0; i < members_count && !flag; i++)
+    {
+        if (ages[i] >= 50)
+        {
+            discount += 1;
+            flag = true;
+        }
+    }
+
+    //Group of more than 2 members will recieve a discount based on the creterias:
+    if (members_count > 1)
+    {
+
+        //Birthday - family member which celebrates birthday will recieve 2% discount
+        flag = false;
+        for (int i = 0; i < members_count && !flag; i++)
+        {
+            if (day == this->bday[i] && month == this->bmonth[i])
+            {
+                discount += 2;
+                flag = true;
+            }
+        }
+
+        //Women's day discount - during 8 of March a female family member will recieve 1% discount
+        flag = false;
+        if (day == 8 && month == 3)
+            for (int i = 0; i < members_count && !flag; i++)
+            {
+                if (this->genders[i] == 'F')
+                {
+                    discount += 2;
+                    flag = true;
+                }
+            }
+    }
+    return discount;
 }

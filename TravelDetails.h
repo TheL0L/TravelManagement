@@ -29,7 +29,7 @@ struct TravelDetails
     
     void t_input(int travel_code);
     void t_output();
-    void compute_expenses();
+    void compute_expenses(int dis);
     int get_travel_code();
     void update_adults(int count);
 };

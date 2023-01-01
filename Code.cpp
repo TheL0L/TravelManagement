@@ -299,7 +299,7 @@ int main()
                     FileManager<PersonalDetails>().ReadFromFile(_personal_details_filename, acceptcode, PD);
                     FileManager<TravelDetails>().ReadFromFile(_travel_details_filename, acceptcode, TD);
                     TD.update_adults(PD.adults_count());
-                    TD.compute_expenses();
+                    TD.compute_expenses(PD.DiscountAvaliablity());  // check for discount and pass it further
                 }
                 else if (opt2 == 5) 
                 {
