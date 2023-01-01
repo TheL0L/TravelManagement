@@ -8,6 +8,8 @@
 #include "Currency.h"
 #include "PriceManager.h"
 
+struct date_pack { int day = 1, month = 1, year = 1970; };
+
 #define _personal_details_filename "personal_details.bin"
 #define _travel_details_filename "travel_details.bin"
 
@@ -72,35 +74,160 @@ void printStats(int* stats)// print the hotest and least hotest locations
     cout << endl;
 }
 
-void print_same_destination_implement(int tc) {
-    bool success_flag;
-    //we get a travel code and read from the file the data of the user that corresponds with the travel code//
-    TravelDetails data;
-    PersonalDetails p_data;
-    success_flag=FileManager<TravelDetails>().ReadFromFile("travel_details.bin", tc, data);
-    if (success_flag == false) {
-        return;
-    }
+void get_date(date_pack& date)
+{
+    bool invalid = true;
 
-    //we take the destination with data.disembarking_point_id and we'll give it to a temporary arguemnt//
-    int dest = data.disembarking_point_id;
-
-    //we check the disembarking point for each travel code (user) on the file and if it matches with the x (the user who we took his disembarking point) and print family names that fly there as well//
-    cout << "The families that fly to the same destination are:" << endl;
-    for (int i = 1; i <= settings.last_travel_code; i++) {
-        success_flag=FileManager<TravelDetails>().ReadFromFile("travel_details.bin", i, data);
-
-        if (success_flag == false) {
-            continue;
+    do  // validity check
+    {
+        cin >> date.day >> date.month >> date.year;
+        
+        if (date.day < 1 || date.month < 1 || date.year < 1970)
+        {
+            invalid = true;
+        }
+        else if (date.day > 31 || date.month > 12 || date.year > 2300)
+        {
+            invalid = true;
         }
 
-        if (dest == data.disembarking_point_id) {
-            success_flag=FileManager<PersonalDetails>().ReadFromFile("personal_details.bin", data.ID, p_data);
-            if (success_flag == false) {
+        // if we got here, then year & month are valid.
+        // procced to check day
+
+        else if (date.month == 2)
+        {
+            if (date.day <= 28)
+                invalid = false;
+        }
+        else if (date.month == 4 || date.month == 6 || date.month == 9 || date.month == 11)
+        {
+            if (date.day <= 30)
+                invalid = false;
+        }
+        else
+        {
+            invalid = false;
+        }
+
+    } while (invalid);
+    
+}
+
+void get_dest(int& dest)
+{
+    bool invalid;
+    do
+    {
+        system("cls");
+        cout << "\n*** Select Destination ***" << endl;
+        cout << "1.New York\t\t6.Dubai\t\t\t11.Antananariv";
+        cout << "\n2.Miami\t\t7.Lisbon\t\t12.Cairo";
+        cout << "\n3.Rio De Janeiro\t8.London\t\t13.Perth";
+        cout << "\n4.Colombo\t\t9.Copenhagen\t\t14.Sydney";
+        cout << "\n5.Hong Kong\t\t10.Cape Town\t\t15.Wellington" << endl;
+        
+        cin >> dest;
+        if (dest >= 1 || dest <= 15)
+        {
+            invalid = false;
+        }
+    } while (invalid);
+}
+
+bool check_time_span(date_pack min, date_pack max, date_pack date)
+{
+    // check min
+    if (date.year < min.year)
+        return false;
+    else if (date.year == min.year)
+    {
+        if (date.month < min.month)
+            return false;
+        else if (date.month == min.month)
+        {
+            if (date.day < min.day )
+                return false;
+        }
+    }
+    
+    // check max
+    if (date.year > max.year)
+        return false;
+    else if (date.year == max.year)
+    {
+        if (date.month > max.month)
+            return false;
+        else if (date.month == max.month)
+        {
+            if (date.day > max.day)
+                return false;
+        }
+    }
+    return true;
+}
+
+void print_same_destination_implement()
+{
+    /*
+        we ask the user to enter a dates range, and a locataion by ID.
+            validate the dates.
+        we got over the database and find entries that match.
+        as we find them we print them in a list.
+    */
+
+    // ask user to enter dates range
+    date_pack min_date, max_date;
+    
+    system("cls");
+    cout << "Please enter the dates range:" << endl;
+    cout << "from: (dd mm yyyy)   ";
+    get_date(min_date);
+    cout << endl;
+    cout << "to: (dd mm yyyy)     ";
+    get_date(max_date);
+
+
+    // ask user for a destintaion
+    int dest;
+    get_dest(dest);
+    
+
+    // print chosen details
+    cout << "from --> (" << min_date.day << "/" << min_date.month << "/" << min_date.year << ")";
+    cout << " to--> (" << max_date.day << "/" << max_date.month << "/" << max_date.year << ")" << endl;
+    cout << "Destintaion: ";
+    disembarking_name(dest);
+    cout << endl << endl;
+    cout << "The families that fly to the same destination are:" << endl;
+
+
+    bool success_flag;
+    TravelDetails t_data;
+    PersonalDetails p_data;
+    date_pack family_date;
+    // go over database and check which families travel to chosen destination and in given time span
+    for (int i = 1; i <= settings.last_travel_code; i++)
+    {
+        success_flag = FileManager<TravelDetails>().ReadFromFile("travel_details.bin", i, t_data);
+        if (success_flag == false)
+            continue;
+
+        if (dest == t_data.disembarking_point_id)
+        {
+            success_flag = FileManager<PersonalDetails>().ReadFromFile("personal_details.bin", t_data.ID, p_data);
+            if (success_flag == false)
                 continue;
-            }
-            //print the family name somehow//
-            cout<<p_data.family_name<<endl;
+            
+            /* CHECK DATE RANGE */
+            family_date.year = t_data.year;
+            family_date.month = t_data.month;
+            family_date.day = t_data.day;
+            success_flag = check_time_span(min_date, max_date, family_date);
+            if (success_flag == false)
+                continue;
+
+            // print the family name
+            cout << p_data.family_name << endl;
         }
     }
 }
@@ -158,7 +285,7 @@ int main()
         cout << "#######################################\n";
 
         cout << "\nPlease select an option:\n";
-        cout << "\n1.New User\n2.Existing User\n\n3.Statistics\n4.Settings\n5.Exit" << endl;
+        cout << "\n1.New User\n2.Existing User\n\n3.Statistics\n4.Print Travels of Destination in timespan\n\n5.Settings\n6.Exit" << endl;
         cin >> main_choice;
         cin.ignore();
 
@@ -235,7 +362,7 @@ int main()
                 cout << "\n~~~~~~~";
                 cout << "\n\nPlease select the type of operation that you would like to perform:";
                 cout << "\n1.View Personal Details\n2.View Travel Details\n3.Edit Details" << endl;
-                cout << "4.Compute Bill\n\n5.Print all families with similar destination\n\n6.Back" << endl;
+                cout << "4.Compute Bill\n5.Back" << endl;
                 cin >> opt2;
                 if (opt2 == 1)
                 {
@@ -301,12 +428,7 @@ int main()
                     TD.update_adults(PD.adults_count());
                     TD.compute_expenses();
                 }
-                else if (opt2 == 5) 
-                {
-                    system("cls");
-                    print_same_destination_implement(acceptcode);
-                }
-                else if (opt2 == 6)
+                else if (opt2 == 5)
                 {
                     break;
                 }
@@ -319,13 +441,17 @@ int main()
 			stats = Statistics();
 			printStats(stats);
 			system("pause");
-        break;
+            break;
         case 4:
+            system("cls");
+            print_same_destination_implement();
+            break;
+        case 5:
             settings_menu();
             break;
         }
-    } while (main_choice != 5);
-
+    } while (main_choice != 6);
+    
     settings.SaveSettings();
     return 0;
 }
