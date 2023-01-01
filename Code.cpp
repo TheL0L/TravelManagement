@@ -310,20 +310,11 @@ int main()
                     /* update latest travel code */
                     settings.SaveTravelCode();
 
-                    /* save personal */
-                    ofstream ofl("personal_details.bin", ios::binary | ios::app);
-                    if (!ofl)
-                        cout << "\n\nSorry.The File Cannot Be Opened For Writing" << endl;
-                    ofl.write((char *)&PD, sizeof(PD));
-                    ofl.close();
+                    /* save personal details */
+                    FileManager<PersonalDetails>().AppendToFile(_personal_details_filename, PD);
 
-                    /* save travel */
-                    ofstream ofl1("travel_details.bin", ios::binary | ios::app);
-                    if (!ofl1)
-                        cout << "\n\n\t\tSorry.The File Cannot Be Opened For Writing" << endl;
-                    ofl1.write((char *)&TD, sizeof(TD));
-                    ofl1.close();
-
+                    /* save travel details */
+                    FileManager<TravelDetails>().AppendToFile(_travel_details_filename, TD);
 
                     system("cls");
                     cout << "\n\n\n\n!!!!!Your Details Have Been Registered.Please Make A Note Of This Code: " << settings.last_travel_code;
