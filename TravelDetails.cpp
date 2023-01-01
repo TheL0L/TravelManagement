@@ -244,7 +244,7 @@ void TravelDetails::compute_expenses(int dis)
         cout << "\t\t\tEach client is special to us but today you're even more than ever!" << endl;
         cout << "\t\t\tYou will recieve an aditional discount: " << dis << "% off! Thank you for choosing our company!" << endl<<endl;
         total -= (total*(float)dis)/100;
-        cout << "Coast after a discount:" << total << " you saved: " << total - (float)old_price<< endl;
+        cout << "Coast after a discount:" << total << " you saved: " << (old_price - (float)total) << endl;
     }
 
     cout << "All Travellers below the age of 5 have not been charged." << endl;
