@@ -29,7 +29,7 @@ void PersonalDetails::p_input(int travel_code)
             StringInput(this->names[i], 20);
             cout << "Age: ";
             cin >> this->ages[i];
-            cout << "Birthday (day and month): ";
+            cout << "Birthday (dd mm): ";
             cin >> this->bday[i] >> this->bmonth[i];
             cout << "Sex (M/F): ";
             cin >> this->genders[i];
