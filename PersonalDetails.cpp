@@ -10,7 +10,7 @@ void PersonalDetails::p_input(int travel_code)
     this->children_count = 0;
     cout << ":::::::::::::::::::::: PERSONAL DETAILS ::::::::::::::::::::::" << endl;
     cout << "* Please fill in the details:" << endl << "1.Family Name: ";
-    StringInput_no_flushing(this->family_name, 30);
+    StringInput(this->family_name, 30);
     cout << endl << "2.Address: ";
     StringInput_no_flushing(this->address, 50);
     cout << endl << "3.Contact Number(10 Digit Mobile Number) : ";
@@ -29,12 +29,14 @@ void PersonalDetails::p_input(int travel_code)
             StringInput(this->names[i], 20);
             cout << "Age: ";
             cin >> this->ages[i];
-            cout << "Birthday (dd mm): ";
-            cin >> this->bday[i] >> this->bmonth[i];
             cout << "Sex (M/F): ";
             cin >> this->genders[i];
+            this->genders[i] = std::toupper(this->genders[i]);
             cout << "Passport Number: ";
             StringInput(this->passports[i], 9);
+            cout << "Birthday (dd mm): ";
+            cin >> this->bday[i] >> this->bmonth[i];
+
             if (this->ages[i] < 5)
             {
                 children_count++; // to calculate no of travellers below 5 yrs
@@ -54,7 +56,7 @@ void PersonalDetails::p_output()
     cout << "\nName\t\tAge\t\tSex\t\tPassport Number\n" << endl;
     for (int i = 0; i < this->members_count; i++)
     {
-        cout << "\t" << this->names[i] << "\t\t" << this->ages[i] << "\t\t" << this->genders[i] << "\t\t" << this->passports[i] << endl;
+        cout << this->names[i] << "\t\t" << this->ages[i] << "\t\t" << this->genders[i] << "\t\t" << this->passports[i] << endl;
     }
 }
 
