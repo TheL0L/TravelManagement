@@ -109,7 +109,7 @@ int PickAvailableCurrency()
         std::cout << "2. Rupee" << std::endl;
         std::cout << "3. Shekel" << std::endl;
         std::cout << "4. RUB" << std::endl;
-
+        std::cout << ">> ";
         std::cin >> choice;
         std::cin.ignore();  // in case a non numeric input is recieved
 

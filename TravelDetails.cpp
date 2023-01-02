@@ -65,7 +65,7 @@ void TravelDetails::t_input(int travel_code)
             cin >> this->boarding_point_id;
             cout << "\n*** Select Destination ***" << endl;
             cout << "1.New York\t\t6.Dubai\t\t\t11.Antananariv";
-            cout << "\n2.Miami\t\t7.Lisbon\t\t12.Cairo";
+            cout << "\n2.Miami\t\t\t7.Lisbon\t\t12.Cairo";
             cout << "\n3.Rio De Janeiro\t8.London\t\t13.Perth";
             cout << "\n4.Colombo\t\t9.Copenhagen\t\t14.Sydney";
             cout << "\n5.Hong Kong\t\t10.Cape Town\t\t15.Wellington" << endl;
@@ -134,17 +134,22 @@ void TravelDetails::t_output()
             cout << "Economy Clss";
             break;
         }
-        cout << endl << "\n\n\n\tFacilities availed for are:" << endl;
-        if (this->pool)
-            cout << "Swimming Pool" << endl;
-        if (this->gym)
-            cout << "Gym" << endl;
-        if (this->sports)
-            cout << "Sport Facilities" << endl;
-        if (this->spa)
-            cout << "Spa" << endl;
-        if (this->salon)
-            cout << "Beauty Salon" << endl;
+
+        if (this->pool || this->gym || this->sports || this->spa || this->salon)
+        {
+            cout << endl << "\n\nFacilities availed for use are:" << endl << endl;
+            if (this->pool)
+                cout << "* Swimming Pool" << endl;
+            if (this->gym)
+                cout << "* Gym" << endl;
+            if (this->sports)
+                cout << "* Sport Facilities" << endl;
+            if (this->spa)
+                cout << "* Spa" << endl;
+            if (this->salon)
+                cout << "* Beauty Salon" << endl;
+        }
+        cout << endl;
     }
 
 /* Calculate expenses and print them. */
@@ -198,36 +203,36 @@ void TravelDetails::compute_expenses(int dis)
     // print costs table
     cout << "Subject\t\tCost(for 1)\tNo of adults\tTotal" << endl << endl;
 
-    cout << "Travel\t\t" << Currency(prices.destination_ticket, coin_type) << "\t\t   ";
+    cout << "Travel\t\t" << Currency(prices.destination_ticket, coin_type) << "\t   ";
     cout << this->adults_count << "\t\t" << Currency(this->adults_count * prices.destination_ticket, coin_type) << endl;
 
     cout << "Class\t\t" << Currency(class_cost, coin_type) << "\t\t   " << this->adults_count;
-    cout << "\t\t" << Currency(class_cost * this->adults_count, coin_type) << endl;
+    cout << "\t\t" << Currency(class_cost * this->adults_count, coin_type) << endl << endl;
 
     // cost of extra expenses
     if (this->pool)
     {
-        cout << "\nSwimming Pool\t" << Currency(prices.swimming_pool, coin_type) << "\t\t   ";
+        cout << "Swimming Pool\t" << Currency(prices.swimming_pool, coin_type) << "\t\t   ";
         cout << this->adults_count << "\t\t" << Currency(prices.swimming_pool * this->adults_count, coin_type) << endl;
     }
     if (this->gym)
     {
-        cout << "\nGym\t\t" << Currency(prices.gym, coin_type) << "\t\t   ";
+        cout << "Gym\t\t" << Currency(prices.gym, coin_type) << "\t\t   ";
         cout << this->adults_count << "\t\t" << Currency(prices.gym * this->adults_count, coin_type) << endl;
     }
     if (this->sports)
     {
-        cout << "\nSports\t\t" << Currency(prices.other_sports, coin_type) << "\t\t   ";
+        cout << "Sports\t\t" << Currency(prices.other_sports, coin_type) << "\t\t   ";
         cout << this->adults_count << "\t\t" << Currency(prices.other_sports * this->adults_count, coin_type) << endl;
     }
     if (this->salon)
     {
-        cout << "\nSalon\t\t" << Currency(prices.beauty_salon, coin_type) << "\t\t   ";
+        cout << "Salon\t\t" << Currency(prices.beauty_salon, coin_type) << "\t\t   ";
         cout << this->adults_count << "\t\t" << Currency(prices.beauty_salon * this->adults_count, coin_type) << endl;
     }
     if (this->spa)
     {
-        cout << "\nSpa\t\t" << Currency(prices.spa, coin_type) << "\t\t   ";
+        cout << "Spa\t\t" << Currency(prices.spa, coin_type) << "\t\t   ";
         cout << this->adults_count << "\t\t" << Currency(prices.spa * this->adults_count, coin_type) << endl;
     }
 
@@ -238,18 +243,19 @@ void TravelDetails::compute_expenses(int dis)
     total = total * this->adults_count;
 
     // total cost printing
-    cout << "Total cost:  " << total << endl;
+    cout << endl << "Total cost:  " << total << endl;
 
     if (dis > 0)
     {
         Currency old_price(total);
-        cout << "\t\t\tEach client is special to us but today you're even more than ever!" << endl;
-        cout << "\t\t\tYou will recieve an aditional discount: " << dis << "% off! Thank you for choosing our company!" << endl<<endl;
+        cout << "\tEach client is special to us but today you're even more than ever!" << endl;
+        cout << "\tYou will recieve an aditional discount: " << dis << "% off! Thank you for choosing our company!" << endl << endl;
         total -= (total*(float)dis)/100;
-        cout << "Coast after a discount:" << total << " you saved: " << Currency(old_price - (float)total, cointype) << endl;
+        cout << "Cost after the discount: " << total;
+        cout << "\t[ Saved: " << Currency(old_price - (float)total, coin_type) << " ]" << endl;
     }
 
-    cout << "All Travellers below the age of 5 have not been charged." << endl;
+    cout << "All Travellers below the age of 5 have not been charged." << endl << endl;
 }
 
 /* Update adults count for corrent expense calculations. */

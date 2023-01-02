@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 
 #include "Settings.h"
 #include "PersonalDetails.h"
@@ -63,15 +64,20 @@ void printStats(int* stats)// print the hotest and least hotest locations
         if (stats[i] < stats[minIndex])
             minIndex = i;
     }
+    cout << " Amount | Destination" << endl;
+    cout << "______________________" << endl << endl;
     for (int i = 0; i < 15; i++)
     {
+        cout << std::setw(7) << stats[i];
+        cout << " | ";
         disembarking_name(i + 1);
-        cout << " " << stats[i] << endl;
+        cout << endl;
     }
-    cout << "The hotest destination today is: "; disembarking_name(maxIndex + 1);
     cout << endl;
-    cout << "The least hotest destination today is: "; disembarking_name(minIndex + 1);
+    cout << "The hottest destination today is: "; disembarking_name(maxIndex + 1);
     cout << endl;
+    cout << "The least hottest destination today is: "; disembarking_name(minIndex + 1);
+    cout << endl << endl;
 }
 
 void get_date(date_pack& date)
@@ -121,7 +127,7 @@ void get_dest(int& dest)
         system("cls");
         cout << "\n*** Select Destination ***" << endl;
         cout << "1.New York\t\t6.Dubai\t\t\t11.Antananariv";
-        cout << "\n2.Miami\t\t7.Lisbon\t\t12.Cairo";
+        cout << "\n2.Miami\t\t\t7.Lisbon\t\t12.Cairo";
         cout << "\n3.Rio De Janeiro\t8.London\t\t13.Perth";
         cout << "\n4.Colombo\t\t9.Copenhagen\t\t14.Sydney";
         cout << "\n5.Hong Kong\t\t10.Cape Town\t\t15.Wellington" << endl;
@@ -244,7 +250,7 @@ void settings_menu()
         cout << "2. Edit Existing PriceSheets" << endl;
         cout << endl;  // "3. Add New Destinations" << endl;  // an idea
         cout << endl;  // "4. Remove Destinations" << endl;  // an idea
-        cout << "5. Back" << endl;
+        cout << "3. Back" << endl;
 
         cin >> choice;
         cin.ignore();  // in case a non numeric input is recieved
@@ -260,9 +266,9 @@ void settings_menu()
             Edit_PriceSheet(sheet);
             break;
         }
-        settings.SaveSettings();
-        system("pause");
-    } while (choice != 5);
+        if(!settings.SaveSettings())
+            system("pause");
+    } while (choice != 3);
     
 }
 
@@ -295,7 +301,7 @@ int main()
             do
             {
                 system("cls");
-                cout << "\n\n    NEW USER\n";
+                cout << "\n\nNEW USER\n";
                 cout << "*********\n\n";
                 cout << "\n\nChoose an action:";
                 cout << "\n\n1.Enter Personal and Travel Details\n2.Back\n\n";
@@ -317,19 +323,19 @@ int main()
                     FileManager<TravelDetails>().AppendToFile(_travel_details_filename, TD);
 
                     system("cls");
-                    cout << "\n\n\n\n!!!!!Your Details Have Been Registered.Please Make A Note Of This Code: " << settings.last_travel_code;
-                    cout << "\n\n* For modifications,Please visit 'existing user' section in the main screen";
+                    cout << "\n\n\n\nYour details have been registered. please make a note of this code: " << settings.last_travel_code;
+                    cout << "\n* For modifications, please see [Existing User] section in the main menu." << endl << endl;
                     system("pause");
                 }
             } while (opt1 != 2);
             break;
         case 2:
             system("cls");
-            cout << "\n\n** EXISTING USER **\n\nPlease Enter The Travel Code That Was Given To You\n\n";
+            cout << "\n\n** EXISTING USER **\n\nPlease enter a travel code >> ";
             cin >> acceptcode;
             if (acceptcode > settings.last_travel_code)
             {
-                cout << "\nNo such record has been created!";
+                cout << "\nNo such record has been created." << endl << endl;
                 system("pause");
                 break;
             }
@@ -342,18 +348,17 @@ int main()
                 system("pause");
                 break;
             }
-            cout << PD.family_name << "'s FAMILY DATABASE **" << endl;
-            cout << "\t\t\t\tCode no:" << acceptcode << endl;
+            cout << endl << PD.family_name << "'s FAMILY DATABASE **" << endl;
+            cout << "\t\tTravel Code: " << acceptcode << endl << endl;
             system("pause");
             
             do
             {
                 system("cls");
-                cout << "\n\n@@@@@@@@@Information Centre@@@@@@@@@";
-                cout << "\n~~~~~~~";
+                cout << "\n\n############  Information Center  ############";
                 cout << "\n\nPlease select the type of operation that you would like to perform:";
                 cout << "\n1.View Personal Details\n2.View Travel Details\n3.Edit Details" << endl;
-                cout << "4.Compute Bill\n5.Back" << endl;
+                cout << "4.Compute Bill\n\n5.Back" << endl;
                 cin >> opt2;
                 if (opt2 == 1)
                 {
@@ -372,9 +377,9 @@ int main()
                     do
                     {
                         system("cls");
-                        cout << "\n\n\n\t¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬ Edit Details ¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬";
-                        cout << "\n\n\t\tPlease select from among the editing options:\n\n";
-                        cout << "\t\t\t\t1.Modify\n\n\t\t\t\t2.Delete\n\n\t\t\t\t3.Back\n\n\t\t\t\t ";
+                        cout << "\n\n\n############  Edit Details  ############";
+                        cout << "\n\nPlease select from among the editing options:\n\n";
+                        cout << "1.Modify\n2.Delete\n3.Back\n" << endl;
                         cin >> opt3;
                         switch (opt3)
                         {
@@ -382,9 +387,9 @@ int main()
                             do
                             {
                                 system("cls");
-                                cout << "\n\n\t\t Modificaton \n";
-                                cout << "\t\t               ~~~~~";
-                                cout << "\n\n\tChoose The Type Of Details You Want To Modify:\n\n\t\t\t1.Personal Details\n\n\t\t\t2.Travel Details\n\n\t\t\t3.Back\n\n\t\t\t ";
+                                cout << "\n\nModificaton\n";
+                                cout << "***********";
+                                cout << "\n\nChoose which details you want to modify:\n1.Personal Details\n2.Travel Details\n3.Back\n" << endl;
                                 cin >> opt4;
                                 switch (opt4)
                                 {
@@ -436,6 +441,7 @@ int main()
         case 4:
             system("cls");
             print_same_destination_implement();
+            system("pause");
             break;
         case 5:
             settings_menu();
