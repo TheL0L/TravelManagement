@@ -28,6 +28,7 @@ Simple project where the system maintains the inventory data of the customers wh
 
 ## Flowcharts:
 
+![image](https://github.com/TheL0L/TravelManagement/blob/f1181646c83b4c3e3f23476e55e6e57515a824b5/actions_map.png)
 
 ![image](https://user-images.githubusercontent.com/76657393/176773371-d74eec0c-6472-4eae-93ea-5ab3ad12ebeb.png)
 ![image](https://user-images.githubusercontent.com/76657393/176773492-7efae6a0-1f46-4ddf-bb25-cbbdbf33c674.png)
